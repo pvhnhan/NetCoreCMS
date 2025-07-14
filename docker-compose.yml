@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: cms_postgres
+    environment:
+      POSTGRES_DB: cms_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cms_network
+
+  # CMS Application
+  cms_app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: cms_app
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=cms_db;Username=postgres;Password=password
+    depends_on:
+      - postgres
+    networks:
+      - cms_network
+    volumes:
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+
+volumes:
+  postgres_data:
+
+networks:
+  cms_network:
+    driver: bridge 
