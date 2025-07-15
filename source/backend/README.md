@@ -1,61 +1,125 @@
 # CMS Backend - .NET Core 8
 
-Backend API của hệ thống CMS được xây dựng với .NET Core 8, Entity Framework Core và PostgreSQL theo kiến trúc Clean Architecture.
+Backend API của hệ thống CMS được xây dựng với .NET Core 8, Entity Framework Core và PostgreSQL theo kiến trúc Clean Architecture với Micro-Module pattern.
 
 ## 🏗️ Kiến trúc
 
-### Clean Architecture
+### Clean Architecture với Micro-Module Pattern
 ```
 CMS.Application/          # Presentation Layer (Controllers, API)
+├── Modules/             # Micro-Modules
+│   ├── Authentication/  # Auth Module
+│   ├── Home/           # Home Module  
+│   └── Materials/      # Materials Module
 CMS.Core/                # Domain Layer (Entities, Interfaces)
 CMS.Infrastructure/      # Infrastructure Layer (EF Core, Repositories)
 CMS.Common/              # Shared Utilities (JWT, Password Hashing)
 ```
 
-### Microservices Structure
-- **CMS.Application**: Web API với controllers
-- **CMS.Core**: Domain entities và interfaces
-- **CMS.Infrastructure**: Data access và repositories
-- **CMS.Common**: Shared utilities và helpers
-
-## 🚀 Công nghệ sử dụng
-
-- **.NET Core 8**: Framework chính
-- **Entity Framework Core 8**: ORM
-- **PostgreSQL**: Database
-- **JWT Bearer**: Authentication
-- **BCrypt**: Password hashing
-- **Swagger**: API documentation
-
-## 📁 Cấu trúc dự án
-
+### Micro-Module Structure
+Mỗi module có cấu trúc chuẩn:
 ```
-backend/
-├── CMS.Application/           # Web API Project
-│   ├── Controllers/          # API Controllers
-│   ├── Program.cs           # Startup configuration
-│   └── appsettings.json     # Configuration
-├── CMS.Core/                # Domain Layer
-│   ├── Entities/            # Domain entities
-│   │   ├── BaseEntity.cs
-│   │   ├── User.cs
-│   │   ├── SystemInfo.cs
-│   │   ├── Menu.cs
-│   │   └── Banner.cs
-│   └── Interfaces/          # Repository interfaces
-│       ├── IRepository.cs
-│       └── IUnitOfWork.cs
-├── CMS.Infrastructure/      # Data Access Layer
-│   ├── Data/               # DbContext
-│   │   └── CmsDbContext.cs
-│   └── Repositories/       # Repository implementations
-│       ├── Repository.cs
-│       └── UnitOfWork.cs
-└── CMS.Common/             # Shared Utilities
-    └── Utilities/          # Helper classes
-        ├── PasswordHasher.cs
-        └── JwtHelper.cs
+ModuleName/
+├── Controllers/         # API Controllers
+├── Handlers/           # Command Handlers (MediatR)
+├── Queries/            # Query Classes (CQRS)
+├── Services/           # Business Services
+└── DTOs/              # Data Transfer Objects
+    ├── Requests/       # Request DTOs
+    └── Responses/      # Response DTOs
 ```
+
+## 🔄 Pipe Flow Code Chuẩn
+
+### 1. **Query Pattern** (GET Operations)
+- Interface và Implementation trong cùng file
+- Sử dụng IEntityRepository cho data access
+- Controller gọi Query và wrap response trong ApiResponse<T>
+- Handle null response với NotFound()
+
+### 2. **Command Pattern** (POST/PUT/DELETE Operations)
+- Request DTO implement IRequest<T>
+- Handler implement IRequestHandler<Request, Response>
+- Sử dụng IEntityRepository cho data access
+- Controller sử dụng MediatR.Send() và wrap response
+
+### 3. **Service Pattern** (Business Logic)
+- Interface và Implementation trong cùng file
+- Inject dependencies qua constructor
+- Auto-register qua CommonConfig
+- Sử dụng cho business logic phức tạp
+
+### 4. **Repository Pattern** (Data Access)
+- Generic IEntityRepository<T> interface
+- Generic EntityRepository<T> implementation
+- Auto-register qua CommonConfig
+- Support FindAsync, List, Insert, Update, Delete operations
+
+## 🎯 Module Development Guidelines
+
+### Khi tạo module mới:
+
+1. **Tạo cấu trúc thư mục**:
+   - Controllers/ (API endpoints)
+   - Handlers/ (Command handlers)
+   - Queries/ (Query classes)
+   - Services/ (Business services - nếu cần)
+   - DTOs/Requests/ (Request DTOs)
+   - DTOs/Responses/ (Response DTOs)
+
+2. **Implement Query Pattern** (cho GET operations):
+   - Tạo interface và implementation trong cùng file
+   - Inject IEntityRepository<T> qua constructor
+   - Implement business logic cho data retrieval
+   - Return response DTO hoặc null
+
+3. **Implement Command Pattern** (cho POST/PUT/DELETE operations):
+   - Tạo Request DTO implement IRequest<T>
+   - Tạo Handler implement IRequestHandler<Request, Response>
+   - Inject IEntityRepository<T> qua constructor
+   - Implement business logic cho data manipulation
+   - Return response DTO
+
+4. **Create Controller**:
+   - Inject IMediator và IQuery qua constructor
+   - GET endpoints gọi Query
+   - POST/PUT/DELETE endpoints gọi MediatR.Send()
+   - Wrap response trong ApiResponse<T>
+   - Handle null responses với NotFound()
+
+5. **Create DTOs**:
+   - Request DTOs cho input parameters
+   - Response DTOs cho output data
+   - Sử dụng Data Annotations cho validation
+   - Implement IRequest<T> cho Command DTOs
+
+### Best Practices cho Module Development:
+
+1. **Naming Conventions**:
+   - Module name: PascalCase
+   - Controller: {ModuleName}Controller
+   - Query: {ModuleName}Query
+   - Handler: {Action}{Entity}Handler
+
+2. **File Organization**:
+   - Interface và Implementation trong cùng file
+   - DTOs tách riêng Requests và Responses
+   - Controllers chỉ chứa routing logic
+
+3. **Dependency Injection**:
+   - Auto-registration qua CommonConfig
+   - Constructor injection cho dependencies
+   - Scoped lifetime cho repositories
+
+4. **Error Handling**:
+   - Không dùng try-catch trong controllers
+   - Sử dụng ExceptionHandlingMiddleware
+   - Proper HTTP status codes
+
+5. **API Design**:
+   - RESTful endpoints
+   - Consistent response format với ApiResponse<T>
+   - Proper validation với Data Annotations
 
 ## 🛠️ Cài đặt và chạy
 
@@ -64,174 +128,15 @@ backend/
 - PostgreSQL 12+
 - Visual Studio 2022 hoặc VS Code
 
-### Cài đặt database
-```bash
-# Tạo database
-createdb cms_db
-
-# Chạy migrations
-dotnet ef database update
-```
-
-### Chạy ứng dụng
-```bash
-# Restore packages
-dotnet restore
-
-# Build project
-dotnet build
-
-# Chạy development server
-dotnet run --project CMS.Application
-```
-
-API sẽ chạy tại `https://localhost:7000`
-
-## 🔐 Authentication
-
-### JWT Configuration
-```json
-{
-  "JwtSettings": {
-    "SecretKey": "your-super-secret-key-with-at-least-32-characters",
-    "Issuer": "CMS",
-    "Audience": "CMS",
-    "ExpirationInMinutes": 60
-  }
-}
-```
-
-### API Endpoints
-
-#### Authentication
-- `POST /api/auth/login` - Đăng nhập
-- `POST /api/auth/register` - Đăng ký
-- `GET /api/auth/profile` - Lấy thông tin profile
-
-#### Admin APIs (cần authentication)
-- `GET /api/admin/system-info` - Thông tin hệ thống
-- `GET /api/admin/menus` - Quản lý menu
-- `GET /api/admin/banners` - Quản lý banner
-
-## 🗄️ Database Schema
-
-### Users Table
-```sql
-CREATE TABLE Users (
-    Id SERIAL PRIMARY KEY,
-    Username VARCHAR(50) UNIQUE NOT NULL,
-    Email VARCHAR(100) UNIQUE NOT NULL,
-    PasswordHash VARCHAR(255) NOT NULL,
-    Role VARCHAR(20) NOT NULL DEFAULT 'User',
-    IsActive BOOLEAN NOT NULL DEFAULT true,
-    LastLoginAt TIMESTAMP,
-    FailedLoginAttempts INTEGER DEFAULT 0,
-    LockedUntil TIMESTAMP,
-    CreatedAt TIMESTAMP NOT NULL DEFAULT NOW(),
-    UpdatedAt TIMESTAMP
-);
-```
-
-### SystemInfo Table
-```sql
-CREATE TABLE SystemInfos (
-    Id SERIAL PRIMARY KEY,
-    SystemName VARCHAR(100) NOT NULL,
-    Version VARCHAR(20) NOT NULL,
-    Description TEXT,
-    ContactEmail VARCHAR(100),
-    ContactPhone VARCHAR(20),
-    Website VARCHAR(200),
-    LogoUrl VARCHAR(500),
-    FaviconUrl VARCHAR(500),
-    SmtpServer VARCHAR(100),
-    SmtpPort INTEGER,
-    SmtpEmail VARCHAR(100),
-    SmtpPassword VARCHAR(100),
-    SecuritySettings TEXT,
-    AdditionalSettings TEXT,
-    IsActive BOOLEAN NOT NULL DEFAULT true,
-    CreatedAt TIMESTAMP NOT NULL DEFAULT NOW(),
-    UpdatedAt TIMESTAMP
-);
-```
-
-### Menus Table
-```sql
-CREATE TABLE Menus (
-    Id SERIAL PRIMARY KEY,
-    Name VARCHAR(100) NOT NULL,
-    Description TEXT,
-    Url VARCHAR(200),
-    Icon VARCHAR(50),
-    "Order" INTEGER DEFAULT 0,
-    ParentId INTEGER REFERENCES Menus(Id),
-    Position VARCHAR(20) NOT NULL DEFAULT 'Header',
-    OpenInNewTab BOOLEAN DEFAULT false,
-    AllowedRoles VARCHAR(50),
-    IsActive BOOLEAN NOT NULL DEFAULT true,
-    CreatedAt TIMESTAMP NOT NULL DEFAULT NOW(),
-    UpdatedAt TIMESTAMP
-);
-```
-
-### Banners Table
-```sql
-CREATE TABLE Banners (
-    Id SERIAL PRIMARY KEY,
-    Name VARCHAR(100) NOT NULL,
-    Description TEXT,
-    ImageUrl VARCHAR(500) NOT NULL,
-    LinkUrl VARCHAR(500),
-    Position VARCHAR(20) NOT NULL DEFAULT 'Home',
-    "Order" INTEGER DEFAULT 0,
-    StartDate TIMESTAMP,
-    EndDate TIMESTAMP,
-    OpenInNewTab BOOLEAN DEFAULT false,
-    AltText VARCHAR(200),
-    Title VARCHAR(200),
-    CssClass VARCHAR(100),
-    IsActive BOOLEAN NOT NULL DEFAULT true,
-    CreatedAt TIMESTAMP NOT NULL DEFAULT NOW(),
-    UpdatedAt TIMESTAMP
-);
-```
-
-## 🔧 Configuration
-
-### Connection String
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Database=cms_db;Username=postgres;Password=postgres"
-  }
-}
-```
+### Dependency Injection
+- Auto-register Handlers, Services, Queries qua CommonConfig
+- Register MediatR cho Command/Query handlers
+- Register UnitOfWork cho transaction management
+- Register Repository pattern cho data access
 
 ### CORS Policy
-```csharp
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-```
-
-## 🧪 Testing
-
-### Unit Tests
-```bash
-dotnet test
-```
-
-### Integration Tests
-```bash
-dotnet test --filter Category=Integration
-```
+- AllowAnyOrigin, AllowAnyMethod, AllowAnyHeader cho development
+- Configure specific origins cho production
 
 ## 📊 Performance
 
@@ -240,6 +145,7 @@ dotnet test --filter Category=Integration
 - Repository pattern với lazy loading
 - JWT token caching
 - Database indexing
+- CQRS pattern cho tách biệt read/write operations
 
 ### Monitoring
 - Application insights
@@ -248,73 +154,32 @@ dotnet test --filter Category=Integration
 
 ## 🔒 Security
 
-### Password Security
-- BCrypt hashing với salt
-- Password strength validation
+### Authentication & Authorization
+- JWT Bearer token authentication
+- Role-based authorization
+- Password hashing với BCrypt
 - Account lockout mechanism
 
-### JWT Security
-- Token expiration
-- Secure token storage
-- Refresh token mechanism
-
-### API Security
-- CORS configuration
+### Data Protection
 - Input validation
 - SQL injection prevention
+- XSS protection
+- CSRF protection
 
-## 🚀 Deployment
-
+## 📈 Scalability
 ### Docker
-```dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-COPY bin/Release/net8.0/publish/ App/
-WORKDIR /App
-ENTRYPOINT ["dotnet", "CMS.Application.dll"]
-```
+- Multi-stage build với .NET 8
+- Base image: mcr.microsoft.com/dotnet/aspnet:8.0
+- Build image: mcr.microsoft.com/dotnet/sdk:8.0
+- Copy project files và restore dependencies
+- Build và publish application
+- Expose ports 80 và 443
 
 ### Environment Variables
 ```bash
+# Production
 ASPNETCORE_ENVIRONMENT=Production
-ConnectionStrings__DefaultConnection=your-connection-string
-JwtSettings__SecretKey=your-secret-key
+ConnectionStrings__DefaultConnection=your_production_connection_string
+JwtSettings__SecretKey=your_production_secret_key
 ```
-
-## 📚 API Documentation
-
-### Swagger UI
-Truy cập `https://localhost:7000/swagger` để xem API documentation.
-
-### Postman Collection
-Import file `CMS-API.postman_collection.json` vào Postman.
-
-## 🤝 Contributing
-
-### Development Workflow
-1. Fork repository
-2. Create feature branch
-3. Make changes
-4. Run tests
-5. Submit pull request
-
-### Code Standards
-- C# coding conventions
-- XML documentation
-- Unit test coverage
-- Code review process
-
 ## 📄 License
-
-MIT License - xem file LICENSE để biết thêm chi tiết.
-
-## 🆘 Support
-
-### Issues
-- Bug reports
-- Feature requests
-- Performance issues
-
-### Contact
-- Email: support@cms-platform.com
-- Documentation: https://docs.cms-platform.com
-- Community: https://community.cms-platform.com 

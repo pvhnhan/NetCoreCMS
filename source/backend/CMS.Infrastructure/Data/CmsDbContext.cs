@@ -13,6 +13,7 @@ public class CmsDbContext : DbContext
     public DbSet<SystemInfo> SystemInfos { get; set; }
     public DbSet<Menu> Menus { get; set; }
     public DbSet<Banner> Banners { get; set; }
+    public DbSet<CategoryType> CategoryTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -68,6 +69,14 @@ public class CmsDbContext : DbContext
             entity.Property(e => e.LinkUrl).HasMaxLength(200);
             entity.Property(e => e.Position).HasMaxLength(20);
             entity.Property(e => e.ButtonText).HasMaxLength(50);
+        });
+
+        // CategoryType configuration
+        modelBuilder.Entity<CategoryType>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Description).HasMaxLength(200);
         });
     }
 } 

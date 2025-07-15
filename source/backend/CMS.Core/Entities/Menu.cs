@@ -35,7 +35,7 @@ public class Menu : BaseEntity
     /// <summary>
     /// Thứ tự hiển thị
     /// </summary>
-    public int Order { get; set; } = 0;
+    public int DisplayOrder { get; set; } = 0;
 
     /// <summary>
     /// Menu cha (self-referencing)
@@ -69,4 +69,9 @@ public class Menu : BaseEntity
     /// </summary>
     [StringLength(50)]
     public string? AllowedRoles { get; set; }
+
+    /// <summary>
+    /// Hoạt động
+    /// </summary>
+    public bool IsPublished { get; set; }
 } 

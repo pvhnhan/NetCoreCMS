@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using CMS.Core.Interfaces;
 using CMS.Core.Entities;
+using CMS.Application.DTOs.Responses;
+using CMS.Application.Modules.Home.Queries;
 
 namespace CMS.Application.Modules.Home.Controllers
 {
@@ -12,18 +12,11 @@ namespace CMS.Application.Modules.Home.Controllers
     [Route("api/[controller]")]
     public class HomeController : ControllerBase
     {
-        private readonly ISystemInfoService _systemInfoService;
-        private readonly IMenuService _menuService;
-        private readonly IBannerService _bannerService;
+        private readonly IHomeQuery _homeQuery;
 
-        public HomeController(
-            ISystemInfoService systemInfoService,
-            IMenuService menuService,
-            IBannerService bannerService)
+        public HomeController(IHomeQuery homeQuery)
         {
-            _systemInfoService = systemInfoService;
-            _menuService = menuService;
-            _bannerService = bannerService;
+            _homeQuery = homeQuery;
         }
 
         /// <summary>
@@ -33,23 +26,16 @@ namespace CMS.Application.Modules.Home.Controllers
         [HttpGet("init")]
         public async Task<IActionResult> GetHomeInfo()
         {
-            try
-            {
-                var systemInfo = await _systemInfoService.GetAsync();
-                var publishedMenus = await _menuService.GetPublishedMenusAsync();
-                var publishedBanners = await _bannerService.GetPublishedBannersAsync();
+            var systemInfo = await _homeQuery.GetSystemInfoAsync();
+            var publishedMenus = await _homeQuery.GetMenusAsync();
+            var publishedBanners = await _homeQuery.GetBannersAsync();
 
-                return Ok(new
-                {
-                    systemInfo,
-                    menus = publishedMenus,
-                    banners = publishedBanners
-                });
-            }
-            catch (Exception ex)
+            return Ok(new ApiResponse<object>(data: new
             {
-                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
-            }
+                systemInfo,
+                menus = publishedMenus,
+                banners = publishedBanners
+            }, message: "Lấy thông tin trang chủ thành công"));
         }
 
         /// <summary>
@@ -59,15 +45,8 @@ namespace CMS.Application.Modules.Home.Controllers
         [HttpGet("system-info")]
         public async Task<IActionResult> GetSystemInfo()
         {
-            try
-            {
-                var systemInfo = await _systemInfoService.GetAsync();
-                return Ok(systemInfo);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
-            }
+            var systemInfo = await _homeQuery.GetSystemInfoAsync();
+            return Ok(new ApiResponse<SystemInfo>(data: systemInfo, message: "Lấy thông tin hệ thống thành công"));
         }
 
         /// <summary>
@@ -75,17 +54,10 @@ namespace CMS.Application.Modules.Home.Controllers
         /// </summary>
         /// <returns>Danh sách menu hiển thị trên website</returns>
         [HttpGet("menus")]
-        public async Task<IActionResult> GetPublishedMenus()
+        public async Task<IActionResult> GetMenus()
         {
-            try
-            {
-                var menus = await _menuService.GetPublishedMenusAsync();
-                return Ok(menus);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
-            }
+            var menus = await _homeQuery.GetMenusAsync();
+            return Ok(new ApiResponse<IEnumerable<Menu>>(data: menus, message: "Lấy danh sách menu thành công"));
         }
 
         /// <summary>
@@ -93,17 +65,10 @@ namespace CMS.Application.Modules.Home.Controllers
         /// </summary>
         /// <returns>Danh sách banner hiển thị trên website</returns>
         [HttpGet("banners")]
-        public async Task<IActionResult> GetPublishedBanners()
+        public async Task<IActionResult> GetBanners()
         {
-            try
-            {
-                var banners = await _bannerService.GetPublishedBannersAsync();
-                return Ok(banners);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
-            }
+            var banners = await _homeQuery.GetBannersAsync();
+            return Ok(new ApiResponse<IEnumerable<Banner>>(data: banners, message: "Lấy danh sách banner thành công"));
         }
     }
 } 

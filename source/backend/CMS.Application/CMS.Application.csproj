@@ -28,6 +28,7 @@
   <ItemGroup>
     <Folder Include="Modules\Authentication\DTOs\Responses\" />
     <Folder Include="Configs\" />
+    <Folder Include="Modules\Materials\DTOs\Responses\" />
   </ItemGroup>
 
 </Project>

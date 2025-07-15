@@ -20,7 +20,7 @@ public class Banner : BaseEntity
     [StringLength(200)]
     public string? LinkUrl { get; set; }
 
-    public int OrderIndex { get; set; } = 0;
+    public int DisplayOrder { get; set; } = 0;
 
     public bool IsActive { get; set; } = true;
 
@@ -35,4 +35,5 @@ public class Banner : BaseEntity
     public string? ButtonText { get; set; }
 
     public bool IsExternal { get; set; } = false;
+    public bool IsPublished { get; set; }
 } 

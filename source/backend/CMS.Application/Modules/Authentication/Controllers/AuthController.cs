@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using CMS.Application.Modules.Authentication.DTOs.Requests;
 using CMS.Application.Modules.Authentication.DTOs.Responses;
 using CMS.Application.DTOs.Responses;
+using CMS.Application.Modules.Authentication.Queries;
 
 namespace CMS.Application.Modules.Authentication.Controllers;
 
@@ -11,16 +12,20 @@ namespace CMS.Application.Modules.Authentication.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public AuthController(IMediator mediator)
+    private readonly IAccountQuery _accountQuery;
+
+    public AuthController(IMediator mediator, IAccountQuery accountQuery)
     {
         _mediator = mediator;
+        _accountQuery = accountQuery;
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var response = await _mediator.Send(request);
-        return Ok(new ApiResponse<LoginResponse>(data: response, message: "success"));
+        return Ok(new ApiResponse<LoginResponse>(data: response, message: response.Message ?? "", 
+            statusCode: !string.IsNullOrEmpty(response.Token) ? 200 : 400));
     }
 
     [HttpPost("register")]
@@ -33,8 +38,15 @@ public class AuthController : ControllerBase
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile()
     {
-        var response = await _mediator.Send(new GetProfileRequest { AccessToken = GetAccessToken() });
-        return Ok(new ApiResponse<UserProfileResponse>(data: response, message: "success"));
+        var accessToken = GetAccessToken();
+        var response = await _accountQuery.GetProfileAsync(accessToken);
+        
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new ApiResponse<UserProfileResponse>(data: response, message: "Lấy thông tin profile thành công"));
     }
 
     [HttpPost("change-password")]

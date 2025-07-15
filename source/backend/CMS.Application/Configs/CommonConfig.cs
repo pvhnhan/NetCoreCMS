@@ -1,9 +1,9 @@
-using Microsoft.Extensions.DependencyInjection;
 using NetCore.AutoRegisterDi;
 using System.Reflection;
 using CMS.Core.Interfaces;
 using CMS.Infrastructure.Repositories;
 using MediatR;
+using CMS.Common.Interfaces.Repositories;
 
 namespace CMS.Application.Configs;
 
@@ -21,5 +21,8 @@ public static class CommonConfig
 
         // Đăng ký UnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        // Đăng ký Repository pattern
+        services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<>));
     }
 } 

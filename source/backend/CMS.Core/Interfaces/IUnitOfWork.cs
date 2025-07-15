@@ -1,5 +1,3 @@
-using CMS.Core.Entities;
-
 namespace CMS.Core.Interfaces;
 
 /// <summary>
@@ -7,26 +5,6 @@ namespace CMS.Core.Interfaces;
 /// </summary>
 public interface IUnitOfWork : IDisposable
 {
-    /// <summary>
-    /// Repository cho User
-    /// </summary>
-    IRepository<User> Users { get; }
-
-    /// <summary>
-    /// Repository cho SystemInfo
-    /// </summary>
-    IRepository<SystemInfo> SystemInfos { get; }
-
-    /// <summary>
-    /// Repository cho Menu
-    /// </summary>
-    IRepository<Menu> Menus { get; }
-
-    /// <summary>
-    /// Repository cho Banner
-    /// </summary>
-    IRepository<Banner> Banners { get; }
-
     /// <summary>
     /// Lưu thay đổi vào database
     /// </summary>
