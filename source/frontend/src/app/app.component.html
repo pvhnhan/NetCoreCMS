@@ -1,0 +1,166 @@
+<!-- Canva Style Header -->
+<header class="canva-header">
+  <div class="header-container">
+    <div class="header-brand">
+      <div class="brand-logo">
+        <span class="logo-text">
+          <span class="cms-text">CMS</span>          
+        </span>
+      </div>
+    </div>
+    
+    <nav class="header-nav">
+      <a href="/" class="nav-item" [class.active]="!isAdminPage">
+        <span>Trang chủ</span>
+      </a>
+      <a href="/admin/dashboard" class="nav-item" [class.active]="isAdminPage" *ngIf="isAuthenticated() && (currentUser?.role === 'admin' || currentUser?.role === 'manager')">
+        <span>Dashboard</span>
+      </a>
+    </nav>
+    
+    <div class="header-actions">
+      <button *ngIf="!isAuthenticated()" class="login-btn" (click)="showLoginOverlay = true">
+        <mat-icon>login</mat-icon>
+        <span>Đăng nhập</span>
+      </button>
+      <button *ngIf="!isAuthenticated()" class="signup-btn" (click)="showRegisterOverlay = true">
+        <mat-icon>person_add</mat-icon>
+        <span>Đăng ký</span>
+      </button>
+      <button *ngIf="isAuthenticated()" class="user-menu-trigger" [matMenuTriggerFor]="userMenu">
+        <div class="user-avatar">
+          <img *ngIf="currentUser?.avatar" [src]="currentUser?.avatar" alt="avatar" />
+          <i *ngIf="!currentUser?.avatar" class="fas fa-user avatar-icon"></i>
+        </div>
+        <span class="username">{{ currentUser?.username || 'User' }}</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      
+      <mat-menu #userMenu="matMenu" class="user-menu">
+        <div class="menu-header">
+          <div class="menu-user-info">
+            <div class="menu-user-name">{{ currentUser?.fullName || 'User' }}</div>
+            <div class="menu-user-role">{{ currentUser?.username || 'user' }}</div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/auth/profile">
+          <mat-icon>person</mat-icon>
+          <span>Cập nhật thông tin</span>
+        </button>
+        <button mat-menu-item routerLink="/auth/change-password">
+          <mat-icon>vpn_key</mat-icon>
+          <span>Đổi mật khẩu</span>
+        </button>
+        <button mat-menu-item routerLink="/admin/dashboard" *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'manager'">
+          <mat-icon>dashboard</mat-icon>
+          <span>Quản trị dashboard</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()" class="logout-item">
+          <mat-icon>logout</mat-icon>
+          <span>Đăng xuất</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</header>
+
+<!-- Toast Container -->
+<div id="toast-container" style="position: fixed; top: 100px; right: 20px; z-index: 100000; pointer-events: none; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
+
+<!-- Nút scroll to top -->
+<button class="scroll-to-top" title="Lên đầu trang" (click)="scrollToTop()" *ngIf="showScrollTop">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Main Content -->
+<main class="main-content" [class.admin-main]="isAdminPage">
+  <!-- Alert Container -->
+  <div id="alert-container"></div>
+  
+        <!-- Global Loading Overlay -->
+      <div class="global-loading-overlay" 
+           *ngIf="loadingState.isLoading" 
+           [class.fade-out]="loadingState.isFadingOut">
+        <!-- Default Spinner Loading -->
+        <div *ngIf="loadingState.type === 'spinner' && loadingState.spinnerType === 'default'" class="spinner-container">
+          <mat-spinner diameter="50"></mat-spinner>
+          <p class="loading-text">{{ loadingState.message }}</p>
+        </div>
+        
+        <!-- Custom Spinner Loading -->
+        <div *ngIf="loadingState.type === 'spinner' && loadingState.spinnerType === 'custom'" class="spinner-container">
+          <app-custom-spinner 
+            [message]="loadingState.message"
+            [size]="loadingState.spinnerSize || 'medium'">
+          </app-custom-spinner>
+        </div>
+        
+        <!-- Dots Spinner Loading -->
+        <div *ngIf="loadingState.type === 'spinner' && loadingState.spinnerType === 'dots'" class="spinner-container">
+          <app-dots-spinner 
+            [message]="loadingState.message"
+            [size]="loadingState.spinnerSize || 'medium'">
+          </app-dots-spinner>
+        </div>
+        
+        <!-- Wave Spinner Loading -->
+        <div *ngIf="loadingState.type === 'spinner' && loadingState.spinnerType === 'wave'" class="spinner-container">
+          <app-wave-spinner 
+            [message]="loadingState.message"
+            [size]="loadingState.spinnerSize || 'medium'">
+          </app-wave-spinner>
+        </div>
+        
+        <!-- Skeleton Loading -->
+        <div *ngIf="loadingState.type === 'skeleton'" class="skeleton-container">
+          <app-loading-skeleton 
+            [type]="loadingState.skeletonType || 'card'"
+            [items]="loadingState.skeletonItems || 3"
+            [loadingText]="loadingState.message">
+          </app-loading-skeleton>
+        </div>
+      </div>
+  
+  <!-- Router Outlet -->
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Footer -->
+<footer class="footer" *ngIf="!isAdminPage">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <span class="logo-text">CMS</span>
+        </div>
+        <p class="company-desc">
+          Hệ thống quản lý nội thất trường học chuyên nghiệp
+        </p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="/" class="footer-link">Trang chủ</a>
+        <a href="#" class="footer-link">Về chúng tôi</a>
+        <a href="#" class="footer-link">Liên hệ</a>
+        <a href="#" class="footer-link">Hỗ trợ</a>
+      </div>
+      
+      <div class="footer-copyright">
+        <p>&copy; 2025 CMS Platform. Phát triển với .NET Core 8 & Angular 17.x.x.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Login Overlay -->
+<app-login-overlay *ngIf="showLoginOverlay" 
+                   (close)="onLoginClose()" 
+                   (openRegister)="openRegisterFromLogin()"
+                   (loginSuccess)="onLoginSuccess()"></app-login-overlay>
+
+<!-- Register Overlay -->
+<app-register *ngIf="showRegisterOverlay" 
+              (close)="onRegisterClose()" 
+              (openLogin)="openLoginFromRegister()"></app-register> 

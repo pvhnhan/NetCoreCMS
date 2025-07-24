@@ -1,0 +1,302 @@
+<div class="home">
+  <!-- Hero Banner Section - Canva Style -->
+  <section class="home__hero-banner home__full-width">
+    <div class="home__banner-content">
+      <h1 class="home__banner-title">HỆ THỐNG SỐ HÓA QUẢN LÝ NGHIỆP VỤ</h1>
+      <button class="home__cta-button">
+        NỘI THẤT TRƯỜNG HỌC
+      </button>
+    </div>
+  </section>
+
+  <!-- Main Management Modules Section - Gam màu cafe cánh bướm -->
+  <section class="management-modules-section">
+    <div class="management-container">
+      <div class="management-header">
+        <h2 class="section-title management-title">MODULE SỐ HÓA QUẢN LÝ</h2>        
+        <p class="management-subtitle">
+          Tối ưu hóa quy trình quản lý toàn diện cho hệ thống nội thất trường học
+        </p>
+      </div>
+      
+      <div class="management-grid">
+        <div *ngFor="let card of managementCards; let i = index"
+             class="management-card"
+             [ngClass]="{
+               'project-animate': animateManagementCards && i < 4,
+               'delay-1': animateManagementCards && i === 0,
+               'delay-2': animateManagementCards && i === 1,
+               'delay-3': animateManagementCards && i === 2,
+               'delay-4': animateManagementCards && i === 3
+             }">
+          <div class="management-icon" [ngClass]="card.iconClass">
+            <mat-icon>{{card.icon}}</mat-icon>
+          </div>
+          <h3>{{card.title}}</h3>
+          <p>{{card.desc}}</p>
+          <div class="management-features">
+            <span class="feature-tag" *ngFor="let tag of card.tags">{{tag}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Management Section -->
+  <section class="home__project-management home__full-width">
+    <div class="home__project-container">
+      <!-- Left Column - Project Grid -->
+      <div class="home__project-grid">
+        <div *ngFor="let card of projectCards; let i = index"
+             class="home__project-card home__elevated"
+             [ngClass]="{
+               'project-animate': animateProjectSection && i < 4,
+               'delay-1': animateProjectSection && i === 0,
+               'delay-2': animateProjectSection && i === 1,
+               'delay-3': animateProjectSection && i === 2,
+               'delay-4': animateProjectSection && i === 3
+             }">
+          <div class="home__project-icon">
+            <mat-icon>{{card.icon}}</mat-icon>
+          </div>
+          <h3>{{card.title}}</h3>
+          <p>{{card.desc}}</p>
+          <div class="home__project-tags">
+            <span *ngFor="let tag of card.tags">{{tag}}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Column - Description & CTA -->
+      <div class="home__project-content"
+           [ngClass]="{
+             'content-animate': animateProjectContent
+           }">
+        <h2 class="home__project-title">QUẢN LÝ DỰ ÁN NỘI THẤT</h2>
+        <p class="home__project-description">
+          Theo dõi và quản lý các dự án nội thất trường học một cách hiệu quả. 
+          Từ <strong>lập kế hoạch</strong>, <strong>phân công nhóm</strong> đến <strong>báo cáo kết quả</strong>, 
+          hệ thống hỗ trợ toàn bộ quy trình quản lý dự án chuyên nghiệp.
+        </p>
+        
+        <div class="home__project-features">
+          <div class="home__project-feature">
+            <mat-icon>check_circle</mat-icon>
+            <span>Quản lý tiến độ dự án theo thời gian thực</span>
+          </div>
+          <div class="home__project-feature">
+            <mat-icon>check_circle</mat-icon>
+            <span>Phân công và theo dõi công việc nhóm</span>
+          </div>
+          <div class="home__project-feature">
+            <mat-icon>check_circle</mat-icon>
+            <span>Báo cáo và phân tích hiệu suất chi tiết</span>
+          </div>
+          <div class="home__project-feature">
+            <mat-icon>check_circle</mat-icon>
+            <span>Quản lý ngân sách và chi phí dự án</span>
+          </div>
+        </div>
+        
+        <div class="home__project-actions">
+          <button mat-raised-button color="primary" class="home__cta-button">
+            <mat-icon>play_arrow</mat-icon>
+            Bắt đầu quản lý dự án
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Furniture Products Section - Canva Style -->
+  <!-- XÓA PHẦN LƯỚI 2x2 SẢN PHẨM CŨ -->
+  
+  <!-- Sản phẩm nội thất - Slider Style với gam màu cafe cánh bướm -->
+  <section class="furniture-slider-section">
+    <div class="furniture-container">
+      <div class="furniture-header">
+        <h2 class="section-title furniture-title">SẢN PHẨM NỘI THẤT TRƯỜNG HỌC</h2>
+        <p class="furniture-subtitle">
+          Sản phẩm chất lượng, thiết kế phù hợp với nhu cầu học tập và giảng dạy
+        </p>
+      </div>
+      
+      <div class="furniture-slider" id="productSlider">
+        <button class="slider-nav slider-prev" (click)="scrollSlider('prev')" aria-label="Trước">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        
+        <div class="furniture-cards" id="productCards">
+          <div class="furniture-card">
+            <div class="card-header">
+              <mat-icon>school</mat-icon>
+              <h3>Bàn học sinh</h3>
+            </div>
+            <div class="card-content">
+              <img src="assets/images/desk.png" alt="Bàn học sinh" 
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="fallback-icon" style="display:none;">
+                <mat-icon>school</mat-icon>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="product-tag">Chất liệu gỗ</span>
+              <span class="product-tag">Thiết kế ergonomic</span>
+            </div>
+          </div>
+          
+          <div class="furniture-card">
+            <div class="card-header">
+              <mat-icon>chair</mat-icon>
+              <h3>Ghế học sinh</h3>
+            </div>
+            <div class="card-content">
+              <img src="assets/images/chair.png" alt="Ghế học sinh" 
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="fallback-icon" style="display:none;">
+                <mat-icon>chair</mat-icon>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="product-tag">Đệm êm ái</span>
+              <span class="product-tag">Điều chỉnh chiều cao</span>
+            </div>
+          </div>
+          
+          <div class="furniture-card">
+            <div class="card-header">
+              <mat-icon>dashboard</mat-icon>
+              <h3>Bảng viết</h3>
+            </div>
+            <div class="card-content">
+              <img src="assets/images/board.jpg" alt="Bảng viết" 
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="fallback-icon" style="display:none;">
+                <mat-icon>dashboard</mat-icon>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="product-tag">Chống lóa</span>
+              <span class="product-tag">Dễ lau chùi</span>
+            </div>
+          </div>
+          
+          <div class="furniture-card">
+            <div class="card-header">
+              <mat-icon>inventory_2</mat-icon>
+              <h3>Tủ đựng đồ</h3>
+            </div>
+            <div class="card-content">
+              <img src="assets/images/cabinet.jpg" alt="Tủ đựng đồ" 
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="fallback-icon" style="display:none;">
+                <mat-icon>inventory_2</mat-icon>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="product-tag">Nhiều ngăn</span>
+              <span class="product-tag">Khóa an toàn</span>
+            </div>
+          </div>
+          
+          <div class="furniture-card">
+            <div class="card-header">
+              <mat-icon>meeting_room</mat-icon>
+              <h3>Bàn giáo viên</h3>
+            </div>
+            <div class="card-content">
+              <img src="/assets/images/placeholder.jpg" alt="Bàn giáo viên" 
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="fallback-icon" style="display:none;">
+                <mat-icon>meeting_room</mat-icon>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="product-tag">Rộng rãi</span>
+              <span class="product-tag">Ngăn kéo tiện lợi</span>
+            </div>
+          </div>
+          
+          <div class="furniture-card">
+            <div class="card-header">
+              <mat-icon>lightbulb</mat-icon>
+              <h3>Đèn học</h3>
+            </div>
+            <div class="card-content">
+              <img src="/assets/images/placeholder.jpg" alt="Đèn học" 
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="fallback-icon" style="display:none;">
+                <mat-icon>lightbulb</mat-icon>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="product-tag">Ánh sáng tự nhiên</span>
+              <span class="product-tag">Tiết kiệm điện</span>
+            </div>
+          </div>
+        </div>
+        
+        <button class="slider-nav slider-next" (click)="scrollSlider('next')" aria-label="Tiếp">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Revenue Reports Section - Gam màu cafe cánh bướm -->
+  <section class="revenue-reports-section">
+    <div class="revenue-container">
+      <div class="revenue-header">
+        <h2 class="section-title revenue-title text-white">BÁO CÁO DOANH THU</h2>
+        <p class="revenue-subtitle">
+          Phân tích chi tiết doanh thu và hiệu suất kinh doanh
+        </p>
+      </div>
+      
+      <div class="revenue-grid">
+        <div class="revenue-card">
+          <div class="revenue-icon">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+          <h3>Doanh thu tháng</h3>
+          <p>Theo dõi doanh thu theo tháng và so sánh với các kỳ trước</p>
+          <div class="revenue-stats">
+            <div class="revenue-stat">
+              <span class="revenue-value">2.5M</span>
+              <span class="revenue-label">VND</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="revenue-card">
+          <div class="revenue-icon">
+            <mat-icon>pie_chart</mat-icon>
+          </div>
+          <h3>Phân tích sản phẩm</h3>
+          <p>Phân tích doanh thu theo từng loại sản phẩm và dịch vụ</p>
+          <div class="revenue-stats">
+            <div class="revenue-stat">
+              <span class="revenue-value">85%</span>
+              <span class="revenue-label">Tăng trưởng</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="revenue-card">
+          <div class="revenue-icon">
+            <mat-icon>assessment</mat-icon>
+          </div>
+          <h3>Dự báo doanh thu</h3>
+          <p>Dự báo doanh thu dựa trên dữ liệu lịch sử và xu hướng thị trường</p>
+          <div class="revenue-stats">
+            <div class="revenue-stat">
+              <span class="revenue-value">3.2M</span>
+              <span class="revenue-label">Dự kiến</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div> 

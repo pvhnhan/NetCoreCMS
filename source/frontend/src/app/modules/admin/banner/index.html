@@ -1,0 +1,165 @@
+<!-- Error/Success Messages -->
+<div *ngIf="errorMessage" class="alert alert-danger">
+  <mat-icon>error</mat-icon>
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="successMessage" class="alert alert-success">
+  <mat-icon>check_circle</mat-icon>
+  {{ successMessage }}
+</div>
+
+<!-- Banner Management Page -->
+<div class="banner-management">
+  <ng-container *ngIf="isLoading; else mainContent">
+    <div class="banner-management__loading">
+      <app-custom-spinner message="Đang tải dữ liệu..." size="medium"></app-custom-spinner>
+    </div>
+  </ng-container>
+  <ng-template #mainContent>
+    <!-- Header Section -->
+    <div class="banner-management__header">
+      <div class="banner-management__header-content">
+        <div class="banner-management__header-title">
+          <mat-icon class="banner-management__header-icon">image</mat-icon>
+          <div>
+            <h1>Quản lý Banner</h1>            
+          </div>
+        </div>
+        <div class="banner-management__header-actions">
+          <app-icon-add-button (click)="openAddDialog()" ariaLabel="Thêm Banner"></app-icon-add-button>
+        </div>
+      </div>
+    </div>
+    <!-- Banner List -->
+    <div class="banner-management__content">
+      <div class="banner-management__cards">
+        <div *ngFor="let banner of banners" class="banner-management__card">
+          <div class="banner-management__card-header">
+            <mat-icon>image</mat-icon>
+            <h3>{{ banner.title }}</h3>
+          </div>
+          <div class="banner-management__card-content">
+            <img [src]="banner.imageUrl" [alt]="banner.title" (error)="onImageError($event)">
+            <div class="banner-management__card-actions">
+              <button mat-icon-button class="edit-banner-btn" color="primary" (click)="editBanner(banner)" aria-label="Sửa banner">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button class="delete-banner-btn" color="warn" (click)="deleteBanner(banner.id)" aria-label="Xóa banner">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="banner-management__card-footer">
+            <div class="custom-chip-list">
+              <mat-chip [color]="banner.isActive ? 'accent' : 'warn'" selected>
+                {{ banner.isActive ? 'Hoạt động' : 'Không hoạt động' }}
+              </mat-chip>
+              <mat-chip class="link-chip">{{ banner.link || 'Không có link' }}</mat-chip>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+    <!-- Add/Edit Modal -->
+    <div *ngIf="showDialog" class="banner-modal-overlay" (click)="closeDialog()">
+      <div class="banner-modal-container" (click)="$event.stopPropagation()">
+
+        
+        <div class="banner-modal-header">
+          <div class="banner-modal-header-content">
+            <div class="banner-modal-header-text">
+              <h2>{{ isEditing ? 'SỬA BANNER' : 'THÊM BANNER' }}</h2>
+              <p>{{ isEditing ? 'Cập nhật thông tin banner' : 'Tạo banner mới cho website' }}</p>
+            </div>
+            <button class="banner-modal__close-btn" (click)="closeDialog()" aria-label="Đóng">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+        
+        <div class="banner-modal-content">
+          
+          <form [formGroup]="bannerForm" (ngSubmit)="saveBanner()" class="banner-modal-form">
+                          <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Tiêu đề banner</mat-label>
+                <input matInput formControlName="title" placeholder="Nhập tiêu đề banner">
+                <mat-error *ngIf="isFieldInvalid('title')">{{ getFieldError('title') }}</mat-error>
+              </mat-form-field>
+              
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Thứ tự hiển thị</mat-label>
+                  <input matInput type="number" formControlName="order" min="1" placeholder="Nhập thứ tự">
+                  <mat-error *ngIf="isFieldInvalid('order')">{{ getFieldError('order') }}</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Vị trí hiển thị</mat-label>
+                  <mat-select formControlName="position">
+                    <mat-option value="top">Trên cùng</mat-option>
+                    <mat-option value="bottom">Dưới cùng</mat-option>
+                    <mat-option value="left">Bên trái</mat-option>
+                    <mat-option value="right">Bên phải</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="isFieldInvalid('position')">{{ getFieldError('position') }}</mat-error>
+                </mat-form-field>
+              </div>
+              
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Mô tả</mat-label>
+                <textarea matInput formControlName="description" placeholder="Nhập mô tả chi tiết về banner" rows="2"></textarea>
+              </mat-form-field>
+              
+              <div class="form-field">
+                <label class="file-upload-label">Ảnh banner <span class="required-asterisk">*</span></label>
+              <div class="file-upload-area" 
+                   (click)="fileInput.click()" 
+                   (dragover)="onDragOver($event)" 
+                   (dragleave)="onDragLeave($event)"
+                   (drop)="onDrop($event)"
+                   [class.drag-over]="isDragOver">
+                <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+                <mat-icon>cloud_upload</mat-icon>
+                <p>Kéo thả hoặc click để chọn hình ảnh</p>
+                <small>Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)</small>
+              </div>
+              <mat-error *ngIf="isFieldInvalid('imageFile')">{{ getFieldError('imageFile') }}</mat-error>
+              
+              <div class="image-preview" *ngIf="imagePreview">
+                <img [src]="imagePreview" alt="Preview" class="preview-img">
+                <button mat-icon-button color="warn" (click)="removeImage()" type="button" class="remove-btn" aria-label="Xóa ảnh">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+            
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Link liên kết</mat-label>
+              <input matInput type="url" formControlName="link" placeholder="https://example.com">
+            </mat-form-field>
+            
+            <div class="form-options">
+              <mat-checkbox formControlName="isPoster" class="option-checkbox">
+                Có phải là poster không
+              </mat-checkbox>
+              
+              <mat-slide-toggle formControlName="isActive" class="option-toggle">
+                {{ bannerForm.get('isActive')?.value ? 'Banner hoạt động' : 'Banner ẩn' }}
+              </mat-slide-toggle>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" (click)="closeDialog()">Hủy</button>
+              <button type="submit" class="btn btn-primary" [disabled]="bannerForm.invalid || isSubmitting">
+                <app-custom-spinner *ngIf="isSubmitting" size="small"></app-custom-spinner>
+                <span *ngIf="!isSubmitting">{{ isEditing ? 'Cập nhật' : 'Thêm banner' }}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>

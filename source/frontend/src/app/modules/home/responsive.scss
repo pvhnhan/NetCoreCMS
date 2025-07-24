@@ -1,0 +1,447 @@
+/* ===== HOME MODULE RESPONSIVE STYLES ===== */
+/* File này chứa responsive styles cho home module */
+
+@import '../../core/styles/variables';
+@import '../../core/styles/mixins';
+
+/* ===== HERO SECTION RESPONSIVE ===== */
+@include mobile {
+  .home__banner-content {
+    padding: 0 $spacing-lg;
+    gap: $spacing-xl;
+  }
+
+  .home__banner-badge {
+    font-size: $font-size-xs;
+    padding: 6px $spacing-md;
+  }
+
+  .home__banner-title {
+    font-size: $font-size-3xl;
+    line-height: $line-height-tight;
+    white-space: normal;
+  }
+
+  .home__banner-subtitle {
+    font-size: 1.125rem; /* Tăng từ $font-size-base (1rem) lên 1.125rem */
+    margin-bottom: $spacing-xl;
+  }
+
+  .home__cta-button {
+    padding: $spacing-md $spacing-xl;
+    font-size: $font-size-sm;
+  }
+
+  .home__banner-stats {
+    gap: $spacing-lg;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .home__stat-number {
+    font-size: $font-size-2xl;
+  }
+
+  .home__stat-label {
+    font-size: $font-size-xs;
+  }
+
+  .home__banner-visual {
+    height: 150px;
+    margin-top: $spacing-xl;
+  }
+
+  .management-modules-section {
+    padding: $spacing-2xl 0;
+  }
+
+  .management-container {
+    padding: 0 $spacing-lg;
+  }
+
+  .management-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+  }
+
+  .management-card {
+    padding: $spacing-lg;
+    
+    h3 {
+      font-size: $font-size-lg;
+    }
+    
+    p {
+      font-size: 0.875rem; /* Tăng từ $font-size-sm (0.875rem) lên 1rem */
+    }
+  }
+
+  .management-icon {
+    width: 60px;
+    height: 60px;
+    
+    mat-icon {
+      font-size: $font-size-2xl;
+      width: $font-size-2xl;
+      height: $font-size-2xl;
+    }
+  }
+
+  .management-features {
+    gap: $spacing-xs;
+  }
+
+  .feature-tag {
+    font-size: $font-size-xs;
+    padding: 4px $spacing-xs;
+  }
+}
+
+@include tablet {
+  .home__banner-content {
+    padding: 0 $spacing-xl;
+  }
+
+  .home__banner-title {
+    font-size: $font-size-4xl;
+  }
+
+  .management-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-xl;
+  }
+}
+
+@include desktop {
+  .management-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-xl;
+  }
+}
+
+/* ===== PROJECT MANAGEMENT RESPONSIVE ===== */
+@include mobile {
+  .home__project-container {
+    grid-template-columns: 1fr;
+    gap: $spacing-xl;
+    padding: 0 $spacing-lg;
+  }
+
+  .home__project-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-md;
+    align-items: stretch;
+  }
+
+  .home__project-card {
+    padding: $spacing-md;
+    min-height: 180px;
+    height: 100%;
+    
+    h3 {
+      font-size: $font-size-sm;
+      line-height: $line-height-tight;
+    }
+    
+    p {
+      font-size: $font-size-xs;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .home__project-icon {
+    width: 35px;
+    height: 35px;
+    margin-bottom: $spacing-sm;
+    
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+  }
+
+  .home__project-title {
+    font-size: 1.8rem;
+  }
+
+  .home__project-description {
+    font-size: 1rem; /* Tăng từ $font-size-sm (0.875rem) lên 1rem */
+  }
+
+  .home__project-features {
+    .home__project-feature {
+      span {
+        font-size: 1rem; /* Tăng từ $font-size-sm (0.875rem) lên 1rem */
+      }
+    }
+  }
+
+  .home__project-actions {
+    flex-direction: column;
+    gap: $spacing-sm;
+    
+    .home__cta-button,
+    .home__secondary-button {
+      padding: $spacing-sm $spacing-lg;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+@include tablet {
+  .home__project-container {
+    grid-template-columns: 1fr;
+    gap: $spacing-2xl;
+  }
+
+  .home__project-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-lg;
+    align-items: stretch;
+  }
+
+  .home__project-card {
+    padding: $spacing-lg;
+    height: 100%;
+  }
+
+  .home__project-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: $spacing-md;
+    
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+  }
+}
+
+@include desktop {
+  .home__project-container {
+    grid-template-columns: 2fr 1fr;
+    gap: $spacing-3xl;
+  }
+
+  .home__project-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-lg;
+  }
+}
+
+/* ===== FURNITURE SLIDER RESPONSIVE ===== */
+@include mobile {
+  .furniture-slider-section {
+    padding: $spacing-2xl 0;
+  }
+
+  .furniture-container {
+    padding: 0 $spacing-lg;
+  }
+
+  .furniture-title {
+    font-size: $font-size-2xl;
+  }
+
+  .furniture-subtitle {
+    font-size: 1rem;
+  }
+
+  .furniture-slider {
+    gap: $spacing-md;
+  }
+
+  .furniture-cards {
+    gap: $spacing-lg;
+    padding: $spacing-md 0;
+  }
+
+  .furniture-card {
+    min-width: 280px;
+    max-width: 320px;
+    padding: $spacing-lg;
+  }
+
+  .card-header {
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+    
+    mat-icon {
+      width: 50px;
+      height: 50px;
+      font-size: $font-size-xl;
+    }
+    
+    h3 {
+      font-size: $font-size-base;
+    }
+  }
+
+  .card-content {
+    height: 160px;
+    margin-bottom: $spacing-md;
+    
+    .fallback-icon mat-icon {
+      font-size: 5rem;
+      width: 5rem;
+      height: 5rem;
+    }
+  }
+
+  .card-footer {
+    gap: $spacing-xs;
+    
+    .product-tag {
+      padding: 4px $spacing-xs;
+      font-size: $font-size-xs;
+    }
+  }
+
+  .slider-nav {
+    width: 40px;
+    height: 40px;
+    
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+  }
+}
+
+@include tablet {
+  .furniture-container {
+    padding: 0 $spacing-xl;
+  }
+
+  .furniture-title {
+    font-size: $font-size-3xl;
+  }
+
+  .furniture-cards {
+    gap: $spacing-xl;
+  }
+
+  .furniture-card {
+    min-width: 300px;
+    max-width: 350px;
+    padding: $spacing-xl;
+  }
+
+  .card-content {
+    height: 180px;
+  }
+}
+
+@include desktop {
+  .furniture-cards {
+    gap: $spacing-2xl;
+  }
+
+  .furniture-card {
+    min-width: 320px;
+    max-width: 380px;
+  }
+
+  .card-content {
+    height: 200px;
+  }
+}
+
+/* ===== REVENUE REPORTS RESPONSIVE ===== */
+@include mobile {
+  .revenue-reports-section {
+    padding: $spacing-2xl 0;
+  }
+
+  .revenue-container {
+    padding: 0 $spacing-lg;
+  }
+
+  .revenue-title {
+    font-size: $font-size-2xl;
+  }
+
+  .revenue-subtitle {
+    font-size: 1rem;
+  }
+
+  .revenue-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+  }
+
+  .revenue-card {
+    padding: $spacing-lg;
+    min-height: 220px;
+    
+    h3 {
+      font-size: $font-size-base;
+    }
+    
+    p {
+      font-size: 0.875rem;
+    }
+  }
+
+  .revenue-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: $spacing-md;
+    
+    mat-icon {
+      font-size: $font-size-xl;
+      width: $font-size-xl;
+      height: $font-size-xl;
+    }
+  }
+
+  .revenue-stats {
+    gap: $spacing-md;
+  }
+
+  .revenue-stat {
+    .revenue-value {
+      font-size: $font-size-2xl;
+    }
+    
+    .revenue-label {
+      font-size: $font-size-xs;
+    }
+  }
+}
+
+@include tablet {
+  .revenue-container {
+    padding: 0 $spacing-xl;
+  }
+
+  .revenue-title {
+    font-size: $font-size-3xl;
+  }
+
+  .revenue-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-xl;
+  }
+
+  .revenue-card {
+    padding: $spacing-xl;
+    min-height: 250px;
+  }
+}
+
+@include desktop {
+  .revenue-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-2xl;
+  }
+  
+  .revenue-card {
+    min-height: 280px;
+  }
+} 

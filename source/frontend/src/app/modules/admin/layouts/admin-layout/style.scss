@@ -1,0 +1,196 @@
+@import 'src/app/core/styles/variables.scss';
+
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  background: $light-gray;
+  margin-top: $spacing-xl;
+  margin-top: 98px;;
+}
+
+.admin-sidebar {
+  width: 320px;
+  background: rgb(78 84 89 / 98%);
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: $shadow-md;
+  z-index: 10;
+  min-height: 100vh;
+  position: relative;
+  padding: $spacing-lg 0;
+}
+
+.sidebar-header {
+  padding: 0 $spacing-lg $spacing-md $spacing-lg;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  letter-spacing: 1px;  
+  background: transparent;
+  border-bottom: 1px solid rgba($white, 0.06);
+  .sidebar-brand {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    letter-spacing: 1px;
+    color: $primary-brown;
+    text-shadow: 0 2px 8px rgba($black, 0.04);
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding-left: $spacing-xs;
+    mat-icon {
+      font-size: $font-size-lg;
+      color: $primary-orange;
+    }
+  }
+}
+
+.sidebar-menu {
+  flex: 1;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: $spacing-xs 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+  li {
+    margin: 0;
+    &.sidebar-dashboard {
+      margin-bottom: $spacing-xs;
+      a {
+        background: none;
+        color: $primary-orange;
+        font-weight: $font-weight-bold;
+        border-radius: $border-radius-md;
+        box-shadow: none;
+        padding: $spacing-md $spacing-lg;
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+        font-size: $font-size-base;
+        margin: 0 $spacing-xs;
+        border-left: 4px solid transparent;
+        transition: background $transition-normal, color $transition-normal, border $transition-normal;
+        .dashboard-icon {
+          background: $white;
+          color: $primary-orange;
+          border-radius: $border-radius-full;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: $font-size-base;
+          box-shadow: $shadow-xs;
+          margin-right: $spacing-xs;
+        }
+        .dashboard-title {
+          font-size: 1.175rem;
+          font-weight: $font-weight-bold;
+        }
+        &:hover, &.active {
+          background: rgba($primary-orange, 0.08);
+          color: $primary-orange;
+          border-left: 4px solid $primary-orange;
+        }
+      }
+    }
+    a {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      color: rgba($white, 0.85);
+      font-size: $font-size-base;
+      font-weight: $font-weight-medium;
+      padding: $spacing-md $spacing-lg;
+      border-radius: $border-radius-md;
+      margin: 0 $spacing-xs;
+      border-left: 4px solid transparent;
+      text-decoration: none;
+      box-shadow: none;
+      transition: background $transition-normal, color $transition-normal, border $transition-normal;
+      mat-icon {
+        font-size: $font-size-lg;
+        width: 24px;
+        height: 24px;
+        margin-right: $spacing-xs;
+      }
+      span {
+        flex: 1;
+      }
+      &:hover, &.active {
+        background: rgba($white, 0.08);
+        color: $primary-orange;
+        border-left: 4px solid $primary-orange;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+// Card cho section title
+.admin-section-title-card {
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  border: 1px solid rgba($primary-brown, 0.08);
+  padding: $spacing-xl $spacing-2xl;
+  margin-bottom: $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+}
+
+// Card cho main content
+.admin-content-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-md;
+  border: 1px solid rgba($primary-brown, 0.08);
+  margin: $spacing-md $spacing-md $spacing-md 0;
+  padding: $spacing-md;
+  min-height: 80vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: $breakpoint-md) {
+  .admin-layout {
+    margin-top: $spacing-md;
+    gap: $spacing-md;
+  }
+  .admin-sidebar {
+    width: 56px;
+    min-width: 56px;
+    padding: $spacing-sm 0;
+  }
+  .sidebar-header, .sidebar-brand {
+    font-size: $font-size-base;
+    padding: $spacing-sm;
+    text-align: center;
+  }
+  .sidebar-menu ul {
+    gap: $spacing-xs;
+    padding: $spacing-xs 0;
+  }
+  .sidebar-menu li a, .sidebar-menu li.sidebar-dashboard a {
+    padding: $spacing-sm;
+    font-size: $font-size-xs;
+    justify-content: center;
+    span { display: none; }
+    .dashboard-title { display: none; }
+  }
+  .sidebar-menu li.sidebar-dashboard a .dashboard-icon {
+    width: 28px;
+    height: 28px;
+    font-size: $font-size-base;
+  }    
+  .admin-main .admin-content-card {
+    margin: $spacing-md $spacing-md $spacing-md 0;
+    padding: $spacing-lg;
+    min-height: 60vh;
+  }
+} 

@@ -1,0 +1,504 @@
+/* ===== ADMIN RESPONSIVE STYLES ===== */
+/* File này chứa responsive styles cho tất cả admin modules */
+
+@import '../core/styles/variables';
+@import '../core/styles/mixins';
+
+/* ===== ADMIN LAYOUT RESPONSIVE ===== */
+@include mobile {
+  .admin-data-layout {
+    flex-direction: column;
+  }
+  
+  .admin-container {
+    margin-top: 60px; // Giảm header height trên mobile
+  }
+  
+  .admin-sidenav {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0 !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    
+    &.open {
+      transform: translateX(0);
+    }
+  }
+  
+  .admin-content {
+    margin-left: 0;
+    width: 100%;
+    padding: $spacing-md;
+  }
+  
+  .admin-header {
+    height: 60px;
+    
+    .header-container {
+      padding: 0 $spacing-md;
+    }
+    
+    .header-brand {
+      .logo-subtitle {
+        display: none;
+      }
+    }
+    
+    .header-actions {
+      .username {
+        display: none;
+      }
+    }
+  }
+}
+
+/* ===== ADMIN PAGE HEADER RESPONSIVE ===== */
+@include mobile {
+  .admin-page-header {
+    flex-direction: column;
+    gap: $spacing-md;
+    text-align: center;
+    
+    .header-actions {
+      justify-content: center;
+    }
+  }
+}
+
+@include tablet {
+  .admin-page-header {
+    flex-direction: row;
+    gap: $spacing-lg;
+  }
+}
+
+/* ===== ADMIN CARD GRID RESPONSIVE ===== */
+@include mobile {
+  .admin-card-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+  
+  .admin-card {
+    .card-content {
+      padding: $spacing-md;
+      
+      .card-title {
+        font-size: $font-size-base;
+      }
+      
+      .card-description {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .admin-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+  }
+}
+
+@include desktop {
+  .admin-card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $spacing-xl;
+  }
+}
+
+/* ===== ADMIN TABLE RESPONSIVE ===== */
+@include mobile {
+  .admin-table {
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      padding: $spacing-sm;
+      font-size: $font-size-sm;
+    }
+    
+    .mat-mdc-header-cell {
+      min-width: 100px;
+    }
+    
+    .mat-mdc-cell {
+      min-width: 80px;
+    }
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+    
+    .admin-table {
+      min-width: 600px;
+    }
+  }
+}
+
+@include tablet {
+  .admin-table {
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      padding: $spacing-md;
+      font-size: $font-size-base;
+    }
+  }
+  
+  .table-responsive {
+    overflow: visible;
+    
+    .admin-table {
+      min-width: auto;
+    }
+  }
+}
+
+/* ===== ADMIN MODAL RESPONSIVE ===== */
+@include mobile {
+  .admin-modal {
+    .modal-dialog {
+      width: 95%;
+      margin: $spacing-md;
+      max-height: 90vh;
+    }
+    
+    .modal-body {
+      padding: $spacing-md;
+    }
+    
+    .modal-footer {
+      flex-direction: column;
+      gap: $spacing-sm;
+    }
+    
+    .form-group {
+      margin-bottom: $spacing-md;
+      
+      label {
+        font-size: $font-size-sm;
+      }
+      
+      input, textarea, select {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .admin-modal {
+    .modal-dialog {
+      width: 90%;
+      max-width: 600px;
+    }
+    
+    .modal-body {
+      padding: $spacing-lg;
+    }
+    
+    .modal-footer {
+      flex-direction: row;
+      gap: $spacing-md;
+    }
+  }
+}
+
+/* ===== ADMIN EMPTY STATE RESPONSIVE ===== */
+@include mobile {
+  .admin-empty-state {
+    padding: $spacing-xl;
+    
+    .empty-icon {
+      font-size: $font-size-4xl;
+    }
+    
+    .empty-title {
+      font-size: $font-size-lg;
+    }
+    
+    .empty-subtitle {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+@include tablet {
+  .admin-empty-state {
+    padding: $spacing-2xl;
+    
+    .empty-icon {
+      font-size: $font-size-5xl;
+    }
+    
+    .empty-title {
+      font-size: $font-size-xl;
+    }
+    
+    .empty-subtitle {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+/* ===== ADMIN LOADING RESPONSIVE ===== */
+@include mobile {
+  .admin-loading {
+    padding: $spacing-xl;
+    
+    .loading-spinner {
+      width: 30px;
+      height: 30px;
+    }
+    
+    .loading-text {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+@include tablet {
+  .admin-loading {
+    padding: $spacing-2xl;
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .loading-text {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+/* ===== ADMIN STATUS BADGE RESPONSIVE ===== */
+@include mobile {
+  .admin-status-badge {
+    padding: 4px $spacing-xs;
+    font-size: $font-size-xs;
+  }
+}
+
+@include tablet {
+  .admin-status-badge {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+  }
+}
+
+/* ===== ADMIN ACTION BUTTONS RESPONSIVE ===== */
+@include mobile {
+  .card-actions {
+    flex-direction: column;
+    gap: $spacing-xs;
+    
+    .edit-btn,
+    .delete-btn {
+      width: 100%;
+      justify-content: center;
+      padding: $spacing-sm;
+      font-size: $font-size-xs;
+      
+      mat-icon {
+        font-size: $font-size-base;
+        width: $font-size-base;
+        height: $font-size-base;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .card-actions {
+    flex-direction: row;
+    gap: $spacing-sm;
+    
+    .edit-btn,
+    .delete-btn {
+      width: auto;
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-size-sm;
+      
+      mat-icon {
+        font-size: $font-size-lg;
+        width: $font-size-lg;
+        height: $font-size-lg;
+      }
+    }
+  }
+}
+
+/* ===== ADMIN FORM RESPONSIVE ===== */
+@include mobile {
+  .admin-modal {
+    .form-group {
+      margin-bottom: $spacing-md;
+      
+      label {
+        font-size: $font-size-sm;
+        margin-bottom: $spacing-xs;
+      }
+      
+      input, textarea, select {
+        padding: $spacing-sm;
+        font-size: $font-size-sm;
+      }
+      
+      textarea {
+        min-height: 80px;
+      }
+      
+      .error-message {
+        font-size: $font-size-xs;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .admin-modal {
+    .form-group {
+      margin-bottom: $spacing-lg;
+      
+      label {
+        font-size: $font-size-base;
+        margin-bottom: $spacing-sm;
+      }
+      
+      input, textarea, select {
+        padding: $spacing-md;
+        font-size: $font-size-base;
+      }
+      
+      textarea {
+        min-height: 100px;
+      }
+      
+      .error-message {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+
+/* ===== ADMIN NAVIGATION RESPONSIVE ===== */
+@include mobile {
+  .admin-nav {
+    flex-direction: column;
+    gap: $spacing-sm;
+    
+    .nav-item {
+      width: 100%;
+      text-align: center;
+      padding: $spacing-sm;
+    }
+  }
+}
+
+@include tablet {
+  .admin-nav {
+    flex-direction: row;
+    gap: $spacing-md;
+    
+    .nav-item {
+      width: auto;
+      padding: $spacing-sm $spacing-md;
+    }
+  }
+}
+
+/* ===== ADMIN SIDEBAR RESPONSIVE ===== */
+@include mobile {
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 320px;
+    height: 100vh;
+    z-index: $z-index-modal;
+    transition: left $transition-normal;
+    
+    &.open {
+      left: 0;
+    }
+  }
+  
+  .admin-content {
+    margin-left: 0;
+    padding: $spacing-md;
+  }
+}
+
+@include tablet {
+  .admin-sidebar {
+    position: fixed;
+    left: 0;
+    width: 320px;
+    height: 100vh;
+  }
+  
+  .admin-content {
+    margin-left: 280px;
+    padding: $spacing-lg;
+  }
+}
+
+/* ===== ADMIN DASHBOARD RESPONSIVE ===== */
+@include mobile {
+  .admin-dashboard {
+    .dashboard-stats {
+      grid-template-columns: 1fr;
+      gap: $spacing-md;
+    }
+    
+    .dashboard-charts {
+      grid-template-columns: 1fr;
+      gap: $spacing-md;
+    }
+    
+    .dashboard-recent {
+      grid-template-columns: 1fr;
+      gap: $spacing-md;
+    }
+  }
+}
+
+@include tablet {
+  .admin-dashboard {
+    .dashboard-stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: $spacing-lg;
+    }
+    
+    .dashboard-charts {
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+    }
+    
+    .dashboard-recent {
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+    }
+  }
+}
+
+@include desktop {
+  .admin-dashboard {
+    .dashboard-stats {
+      grid-template-columns: repeat(4, 1fr);
+      gap: $spacing-xl;
+    }
+    
+    .dashboard-charts {
+      grid-template-columns: repeat(2, 1fr);
+      gap: $spacing-xl;
+    }
+    
+    .dashboard-recent {
+      grid-template-columns: repeat(2, 1fr);
+      gap: $spacing-xl;
+    }
+  }
+} 

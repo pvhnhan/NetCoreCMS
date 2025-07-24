@@ -1,0 +1,807 @@
+@import '../../../core/styles/variables.scss';
+@import '../../../core/styles/mixins.scss';
+
+/* Banner Management Styles */
+
+/* ===== BANNER MANAGEMENT CONTAINER ===== */
+.banner-management {
+  padding: 0;
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER SECTION ===== */
+.banner-management__header {
+  background: #eeeeee;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  
+  &-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }
+  
+  &-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+    h1 {
+      font-size: $font-size-2xl;
+      font-weight: 500;
+      color: $primary-brown;
+      margin: 0;
+      
+      @include mobile {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  
+  &-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: $primary-orange;
+  }
+  
+  &-subtitle {
+    font-size: 1.1rem;
+    color: $gray;
+    margin: 0.5rem 0 0 0;
+  }
+  
+  &-actions {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  &-add-btn {
+    @include flex-center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    
+    mat-icon {
+      font-size: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}
+
+/* ===== LOADING SECTION ===== */
+.banner-management__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.85);
+  z-index: 1000;
+  
+  &-content {
+    text-align: center;
+    
+    p {
+      margin-top: 1rem;
+      color: $gray;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+/* ===== CONTENT SECTION ===== */
+.banner-management__content {
+  background: #f5f5f5;
+  padding: 2rem;
+}
+
+/* Banner cards hiển thị dạng grid 4 cột */
+.banner-management__cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.banner-management__card {
+  background: $white;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
+  border: 1px solid $light-gray;
+  overflow: hidden;
+  transition: box-shadow $transition-normal, transform $transition-normal;
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+  }
+  
+  &-header {
+    background: $gradient-primary;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+  }
+  
+  &-content {
+    position: relative;
+    
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .banner-management__card-actions {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      display: flex;
+      gap: 0.25rem;
+      opacity: 1; /* Luôn hiển thị */
+      transition: opacity $transition-normal;
+    }
+    
+    &:hover .banner-management__card-actions {
+      opacity: 1;
+    }
+  }
+  
+  &-footer {
+    padding: 1rem;
+    background: $light-gray;
+    
+    mat-chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+}
+
+/* Style lại các button icon chuẩn Material */
+.banner-management__add-btn {
+  background: $btn-add-gradient;
+  color: $white;
+  border: none;
+  border-radius: $border-radius-full;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-md;
+  font-size: $font-size-xl;
+  transition: background $transition-normal, box-shadow $transition-normal, transform $transition-fast;
+  &:hover {
+    background: $gradient-primary-reverse;
+    box-shadow: $shadow-lg;
+    transform: scale(1.08);
+  }
+  mat-icon {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+  }
+}
+
+.banner-management__card-actions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: column; /* Bố trí hàng dọc */
+  gap: 0.25rem;
+  opacity: 1; /* Luôn hiển thị */
+  transition: opacity $transition-normal;
+}
+
+.banner-management__card-actions button {
+  border-radius: $border-radius-full;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xl;
+  border: none;
+  margin: 0; /* Bỏ margin-left vì đã dùng flex-direction: column */
+  box-shadow: $shadow-sm;
+  cursor: pointer;
+  padding: 0;
+  background: $white;
+  transition: background $transition-normal, box-shadow $transition-normal, transform $transition-fast;
+  &.edit-banner-btn {
+    background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%); /* Màu vàng phấn */
+    color: $white;
+    &:hover {
+      background: linear-gradient(135deg, #FFB300 0%, #FFD54F 100%);
+      box-shadow: $shadow-lg;
+      transform: scale(1.12);
+    }
+  }
+  &.delete-banner-btn {
+    background: linear-gradient(135deg, #E53935 0%, #B71C1C 100%);
+    color: $white;
+    &:hover {
+      background: linear-gradient(135deg, #B71C1C 0%, #E53935 100%);
+      box-shadow: $shadow-lg;
+      transform: scale(1.12);
+    }
+  }
+  mat-icon {
+    color: $white;
+    font-size: $font-size-xl;
+    margin: 0;
+  }
+}
+
+/* ===== MODAL STYLES ===== */
+.banner-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: $z-index-modal;
+  @include flex-center;
+  padding: $spacing-lg;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.banner-modal-container {
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xl;
+  max-width: 600px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  animation: slideInUp 0.4s ease-out;
+  
+  @include mobile {
+    max-width: 100%;
+    border-radius: 0;
+  }
+}
+
+.banner-modal__close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba($white, 0.2);
+  color: $white;
+  cursor: pointer;
+  @include flex-center;
+  transition: all $transition-normal;
+  flex-shrink: 0;
+  
+  &:hover {
+    background: rgba($white, 0.3);
+    color: $white;
+    transform: scale(1.1);
+  }
+  
+  mat-icon {
+    font-size: $font-size-lg;
+    width: $font-size-lg;
+    height: $font-size-lg;
+  }
+}
+
+.banner-modal-content {
+  padding: $spacing-xl;
+  
+  @include mobile {
+    padding: $spacing-lg;
+  }
+}
+
+.banner-modal-header {
+  background: linear-gradient(90deg, #8B4513 0%, #C19A6B 100%);
+  margin: 0 0 $spacing-md 0;
+  padding: $spacing-lg $spacing-xl;
+  border-radius: $border-radius-lg $border-radius-lg 0 0;
+  
+  .banner-modal-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-md;
+  }
+  
+  .banner-modal-header-text {
+    flex: 1;
+    
+    h2 {
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      color: $white;
+      margin-bottom: $spacing-xs;
+    }
+    
+    p {
+      font-size: $font-size-lg;
+      color: rgba($white, 0.9);
+      margin: 0;
+    }
+  }
+}
+
+.banner-modal-form {
+  .form-field {
+    width: 100%;
+    margin-bottom: $spacing-lg;
+    
+    ::ng-deep {
+      .mat-mdc-form-field {
+        width: 100%;
+      }
+      
+      .mat-mdc-text-field-wrapper {
+        border-radius: $border-radius-md;
+      }
+      
+      .mat-mdc-form-field-focus-overlay {
+        background-color: transparent;
+      }
+      
+      .mat-mdc-form-field.mat-focused .mat-mdc-form-field-focus-overlay {
+        background-color: rgba($primary-brown, 0.05);
+      }
+      
+      .mat-mdc-form-field.mat-focused .mat-mdc-form-field-ripple {
+        background-color: $primary-brown;
+      }
+      
+      .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+        color: $primary-brown;
+      }
+      
+      .mat-mdc-input-element {
+        color: $dark-gray;
+        font-size: $font-size-lg;
+      }
+      
+      .mat-mdc-form-field-label {
+        color: $gray;
+        font-size: $font-size-base;
+      }
+      
+      .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+        color: $primary-brown;
+      }
+      
+      .mat-mdc-form-field-error {
+        color: $danger;
+        font-size: $font-size-base;
+      }
+      
+      /* Style cho dấu * bắt buộc */
+      .required-asterisk {
+        color: #d32f2f;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-lg;
+      }
+      
+      /* Style cho mat-select */
+      .mat-mdc-select {
+        font-size: $font-size-lg;
+      }
+      
+      .mat-mdc-select-value {
+        color: $dark-gray;
+      }
+      
+      .mat-mdc-select-arrow {
+        color: $primary-brown;
+      }
+      
+      /* Style cho mat-option */
+      .mat-mdc-option {
+        font-size: $font-size-base;
+        
+        &.mat-mdc-option-active {
+          background-color: rgba($primary-brown, 0.1);
+        }
+        
+        &.mat-mdc-selected {
+          background-color: rgba($primary-brown, 0.2);
+          color: $primary-brown;
+        }
+      }
+    }
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-md;
+    
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .file-upload-label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-weight: $font-weight-medium;
+    color: $dark-gray;
+    font-size: $font-size-base;
+    
+    .required-asterisk {
+      color: #d32f2f;
+      font-weight: $font-weight-bold;
+      font-size: $font-size-lg;
+    }
+  }
+  
+  .file-upload-area {
+    border: 2px dashed rgba($primary-brown, 0.3);
+    border-radius: $border-radius-md;
+    padding: $spacing-lg;
+    text-align: center;
+    cursor: pointer;
+    transition: all $transition-normal;
+    background: rgba($primary-brown, 0.05);
+    
+    &:hover, &.drag-over {
+      border-color: $primary-brown;
+      background: rgba($primary-brown, 0.1);
+    }
+    
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: $primary-brown;
+      margin-bottom: $spacing-sm;
+    }
+    
+    p {
+      font-size: $font-size-base;
+      color: $dark-gray;
+      margin-bottom: $spacing-xs;
+      font-weight: $font-weight-medium;
+    }
+    
+    small {
+      color: $gray;
+      font-size: $font-size-sm;
+    }
+  }
+  
+  .image-preview {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    margin-top: $spacing-md;
+    padding: $spacing-sm;
+    background: rgba($primary-brown, 0.05);
+    border-radius: $border-radius-md;
+    
+    .preview-img {
+      max-width: 80px;
+      max-height: 60px;
+      border-radius: $border-radius-sm;
+      box-shadow: $shadow-sm;
+      object-fit: cover;
+      border: 1px solid rgba($primary-brown, 0.2);
+    }
+    
+    .remove-btn {
+      background: rgba($danger, 0.1);
+      color: $danger;
+      
+      &:hover {
+        background: $danger;
+        color: $white;
+      }
+    }
+  }
+  
+  .form-options {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+    
+    .option-checkbox {
+      font-size: $font-size-base;
+      
+      ::ng-deep {
+        .mat-mdc-checkbox {
+          .mat-mdc-checkbox-frame {
+            border-color: $primary-brown;
+          }
+          
+          .mat-mdc-checkbox-background {
+            background-color: $primary-brown;
+          }
+        }
+      }
+    }
+    
+    .option-toggle {
+      font-size: $font-size-base;
+      
+      ::ng-deep {
+        .mat-mdc-slide-toggle {
+          .mat-mdc-slide-toggle-bar {
+            background-color: rgba($gray, 0.3);
+          }
+          
+          .mat-mdc-slide-toggle-thumb {
+            background-color: $gray;
+          }
+          
+          &.mat-checked .mat-mdc-slide-toggle-bar {
+            background-color: rgba($primary-brown, 0.3);
+          }
+          
+          &.mat-checked .mat-mdc-slide-toggle-thumb {
+            background-color: $primary-brown;
+          }
+          
+          .mat-mdc-slide-toggle-ripple {
+            background-color: transparent;
+          }
+          
+          &.mat-checked .mat-mdc-slide-toggle-ripple {
+            background-color: rgba($primary-brown, 0.2);
+          }
+        }
+      }
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+    margin-top: $spacing-xl;
+    
+    .cancel-btn {
+      min-width: 80px;
+      border-color: $primary-brown;
+      color: $primary-brown;
+      font-weight: $font-weight-medium;
+      font-size: $font-size-base;
+      
+      &:hover {
+        background: rgba($primary-brown, 0.1);
+        border-color: $primary-brown;
+      }
+    }
+    
+    .submit-btn {
+      min-width: 120px;
+      background: $gradient-primary;
+      color: $white;
+      font-weight: $font-weight-semibold;
+      font-size: $font-size-base;
+      border: none;
+      
+      &:hover:not(:disabled) {
+        @include gradient-brand-reverse;
+        transform: translateY(-2px);
+        box-shadow: $shadow-lg;
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.banner-modal-form .form-actions, .banner-modal-form .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  border-top: 1px solid #eee;
+  margin-top: 1.2rem;
+  .btn {
+    min-width: 110px;
+    border-radius: 2rem;
+    font-size: 1.08rem;
+    font-weight: 600;
+    padding: 0.65rem 1.5rem;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    box-shadow: $shadow-xs;
+    &.btn-secondary {
+      background: #f5f5f5;
+      color: $gray;
+      border: 1px solid #ddd;
+      &:hover {
+        background: #ececec;
+        color: $primary-brown;
+      }
+    }
+    &.btn-primary {
+      background: $gradient-primary;
+      color: #fff;
+      border: none;
+      &:hover {
+        background: $gradient-primary-reverse;
+        color: #fff;
+        box-shadow: $shadow-md;
+      }
+    }
+  }
+}
+
+.banner-modal-form .form-field ::ng-deep .mat-mdc-form-field {
+  width: 100%;
+  border-radius: $border-radius-md;
+  background: transparent;
+  box-shadow: none;
+}
+.banner-modal-form .form-field ::ng-deep .mat-mdc-input-element {
+  font-size: 1.08rem;
+  color: $dark-gray;
+  background: transparent;
+}
+.banner-modal-form .form-field ::ng-deep .mat-mdc-form-field-infix {
+  padding: 0.75rem 0.5rem;
+}
+.banner-modal-form .form-field ::ng-deep .mat-mdc-form-field-outline {
+  border-radius: $border-radius-md;
+}
+.btn, .btn-primary, .btn-secondary {
+  cursor: pointer;
+}
+
+/* ===== ALERT MESSAGES ===== */
+.alert {
+  padding: 1rem;
+  border-radius: $border-radius-md;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  &.alert-danger {
+    background: rgba($danger, 0.1);
+    color: $danger;
+    border: 1px solid rgba($danger, 0.3);
+  }
+  
+  &.alert-success {
+    background: rgba($success, 0.1);
+    color: $success;
+    border: 1px solid rgba($success, 0.3);
+  }
+  
+  mat-icon {
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 
+
+/* Custom chip list để hiển thị đúng */
+.custom-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  
+  .mat-chip {
+    border-radius: $border-radius-md;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    background: $light-gray;
+    color: $primary-brown;
+    box-shadow: $shadow-xs;
+    border: none;
+    min-height: 28px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background $transition-normal, color $transition-normal;
+    
+    /* Override Material Design CSS variables */
+    --mdc-chip-elevated-container-color: transparent;
+    --mdc-chip-elevated-selected-container-color: transparent;
+    --mdc-chip-elevated-disabled-container-color: transparent;
+    --mdc-chip-flat-disabled-selected-container-color: transparent;
+    
+    /* Status chip - Hoạt động */
+    &.mat-accent {
+      background: #4CAF50 !important;
+      color: white !important;
+      --mdc-chip-elevated-container-color: #4CAF50 !important;
+      --mdc-chip-elevated-selected-container-color: #4CAF50 !important;
+      font-weight: 600;
+    }
+    
+    /* Status chip - Không hoạt động */
+    &.mat-warn {
+      background: #9E9E9E !important;
+      color: white !important;
+      --mdc-chip-elevated-container-color: #9E9E9E !important;
+      --mdc-chip-elevated-selected-container-color: #9E9E9E !important;
+      font-weight: 600;
+    }
+    
+    /* Link chip */
+    &:not(.mat-accent):not(.mat-warn) {
+      background: #2196F3 !important;
+      color: white !important;
+      --mdc-chip-elevated-container-color: #2196F3 !important;
+      --mdc-chip-elevated-selected-container-color: #2196F3 !important;
+      font-weight: 500;
+      max-width: 200px;
+    }
+    
+    &.mat-chip-selected {
+      font-weight: 500;
+      box-shadow: $shadow-sm;
+    }
+  }
+} 

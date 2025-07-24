@@ -1,0 +1,325 @@
+/* Banner Module Responsive Styles */
+@import '../../../core/styles/variables.scss';
+@import '../../../core/styles/mixins.scss';
+
+/* ===== TABLET BREAKPOINT (768px - 1024px) ===== */
+@media (max-width: 1024px) {
+  .banner-management {
+    .banner-header {
+      padding: 1.5rem;
+
+      .header-content {
+        .header-title {
+          .page-title {
+            font-size: $font-size-2xl;
+          }
+        }
+      }
+    }
+
+    .banner-content {
+      padding: 0 1.5rem;
+
+      .banner-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+    }
+  }
+}
+
+/* ===== MOBILE BREAKPOINT (max-width: 768px) ===== */
+@media (max-width: 768px) {
+  .banner-management {
+    .banner-header {
+      padding: 1rem;
+      margin-bottom: 1rem;
+
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+
+        .header-title {
+          .header-icon {
+            font-size: 2rem;
+            width: 2rem;
+            height: 2rem;
+          }
+
+          .page-title {
+            font-size: $font-size-2xl;
+          }
+        }
+
+        .header-subtitle {
+          font-size: 0.875rem;
+        }
+      }
+
+      .header-actions {
+        align-self: stretch;
+
+        .add-banner-btn {
+          width: 100%;
+          justify-content: center;
+          padding: 0.875rem 1rem;
+        }
+      }
+    }
+
+    .message-container {
+      margin: 0 1rem 0.75rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+
+      mat-icon {
+        font-size: 1rem;
+      }
+    }
+
+    .banner-content {
+      padding: 0 1rem;
+
+      .banner-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+
+        .banner-card {
+          .card-image {
+            height: 180px;
+          }
+
+          .card-content {
+            padding: 1rem;
+
+            .card-title {
+              font-size: 1.125rem;
+            }
+
+            .card-description {
+              font-size: 0.875rem;
+            }
+
+            .card-meta {
+              .meta-item {
+                font-size: 0.75rem;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .empty-state {
+      margin: 0 1rem;
+      padding: 2rem 1rem;
+
+      .empty-icon {
+        mat-icon {
+          font-size: 3rem;
+          width: 3rem;
+          height: 3rem;
+        }
+      }
+
+      .empty-title {
+        font-size: 1.25rem;
+      }
+
+      .empty-subtitle {
+        font-size: 0.875rem;
+      }
+
+      .empty-action-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+      }
+    }
+
+    .loading-container {
+      padding: 2rem 1rem;
+
+      p {
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  /* Dialog responsive */
+  .dialog-overlay {
+    padding: 1rem;
+
+    .dialog-container {
+      margin: 0;
+      max-height: calc(100vh - 2rem);
+
+      .dialog-header {
+        padding: 1rem 1.5rem;
+
+        .dialog-title {
+          h2 {
+            font-size: 1.25rem;
+          }
+        }
+      }
+
+      .dialog-body {
+        padding: 1.5rem;
+
+        .banner-form {
+          .image-preview {
+            height: 150px;
+          }
+
+          .form-row {
+            margin-bottom: 1rem;
+
+            .status-toggle {
+              padding: 0.75rem;
+
+              .toggle-label {
+                font-size: 0.875rem;
+              }
+            }
+          }
+
+          .form-actions {
+            flex-direction: column;
+            gap: 0.75rem;
+
+            .cancel-btn,
+            .save-btn {
+              width: 100%;
+              justify-content: center;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ===== SMALL MOBILE BREAKPOINT (max-width: 480px) ===== */
+@media (max-width: 480px) {
+  .banner-management {
+    .banner-header {
+      padding: 0.75rem;
+
+      .header-content {
+        .header-title {
+          .page-title {
+            font-size: 1.25rem;
+          }
+        }
+      }
+    }
+
+    .banner-content {
+      padding: 0 0.75rem;
+
+      .banner-grid {
+        .banner-card {
+          .card-image {
+            height: 160px;
+          }
+
+          .card-content {
+            padding: 0.75rem;
+
+            .card-title {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .dialog-overlay {
+    padding: 0.5rem;
+
+    .dialog-container {
+      .dialog-header {
+        padding: 0.75rem 1rem;
+
+        .dialog-title {
+          h2 {
+            font-size: 1.125rem;
+          }
+        }
+      }
+
+      .dialog-body {
+        padding: 1rem;
+
+        .banner-form {
+          .image-preview {
+            height: 120px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ===== LANDSCAPE ORIENTATION ===== */
+@media (max-height: 600px) and (orientation: landscape) {
+  .banner-management {
+    .banner-header {
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .dialog-overlay {
+      padding: 0.5rem;
+
+      .dialog-container {
+        max-height: calc(100vh - 1rem);
+
+        .dialog-body {
+          max-height: calc(100vh - 120px);
+        }
+      }
+    }
+  }
+}
+
+/* ===== HIGH DPI DISPLAYS ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .banner-management {
+    .banner-card {
+      .card-image {
+        img {
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
+        }
+      }
+    }
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .banner-management {
+    .banner-header,
+    .dialog-overlay {
+      display: none;
+    }
+
+    .banner-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+
+      .banner-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+
+        .card-image {
+          height: 150px;
+        }
+      }
+    }
+  }
+} 

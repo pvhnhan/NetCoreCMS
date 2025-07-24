@@ -1,0 +1,131 @@
+// Profile Component Styles
+
+.profile-container {
+  max-width: 800px;
+  padding: 1.5rem;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: #fff;
+}
+
+.profile-avatar mat-icon {
+  font-size: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.profile-name {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.profile-role {
+  font-size: 1.125rem;
+  opacity: 0.9;
+}
+
+.profile-card {
+  margin-bottom: 2rem;
+}
+
+.profile-form {
+  margin-top: 1rem;
+}
+
+.form-row {
+  margin-bottom: 1rem;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.form-actions {
+  margin-top: 1.5rem;
+}
+
+.submit-button {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.button-spinner {
+  margin-right: 0.5rem;
+}
+
+.info-card {
+  margin-bottom: 2rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.info-label mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.info-value {
+  font-size: 1rem;
+  color: #333;
+  padding: 0.5rem 1rem;
+  background: #f5f5f5;
+  border-radius: 0.5rem;
+  border-left: 4px solid #667eea;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+  }
+  .profile-header {
+    padding: 2rem 1rem;
+  }
+  .profile-name {
+    font-size: 1.5rem;
+  }
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+} 

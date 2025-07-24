@@ -1,0 +1,120 @@
+<!-- Error/Success Messages -->
+<div *ngIf="errorMessage" class="alert alert-danger">
+  <mat-icon>error</mat-icon>
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="successMessage" class="alert alert-success">
+  <mat-icon>check_circle</mat-icon>
+  {{ successMessage }}
+</div>
+
+<!-- Category Type Management Page -->
+<div class="category-type">
+  <div class="category-type__container">
+    <ng-container *ngIf="isLoading; else mainContent">
+      <div class="category-type__loading">
+        <app-custom-spinner message="Đang tải dữ liệu..." size="medium"></app-custom-spinner>
+      </div>
+    </ng-container>
+    <ng-template #mainContent>
+      <!-- Header Section -->
+      <div class="category-type__header">
+        <div class="category-type__header-content">
+          <div class="category-type__header-title">
+            <mat-icon class="category-type__header-icon">category</mat-icon>
+            <div>
+              <h1>Quản lý loại danh mục</h1>            
+            </div>
+          </div>
+          <div class="category-type__header-actions">
+            <app-icon-add-button (click)="openAddDialog()" ariaLabel="Thêm loại danh mục"></app-icon-add-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="categoryTypes.length === 0" class="category-type__empty-state">
+        <div class="category-type__empty-content">
+          <mat-icon class="category-type__empty-icon">category</mat-icon>
+          <h3 class="category-type__empty-title">Chưa có loại danh mục nào</h3>
+          <p class="category-type__empty-subtitle">Bắt đầu bằng cách thêm loại danh mục đầu tiên</p>
+          <button mat-raised-button color="primary" class="category-type__empty-btn" (click)="openAddDialog()">
+            <mat-icon>add</mat-icon>
+            Thêm loại danh mục
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Types Table -->
+      <div *ngIf="categoryTypes.length > 0" class="category-type__table-container">
+        <div class="category-type__table-header">
+          <h3>Danh sách loại danh mục</h3>
+          <span class="category-type__table-count">{{ categoryTypes.length }} kết quả</span>
+        </div>
+        
+        <div class="category-type__table-wrapper">
+          <app-table [columns]="tableColumns" [data]="categoryTypes" (edit)="editCategory($event)" (delete)="deleteCategory($event.id)"></app-table>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showDialog" class="category-type__modal-overlay" (click)="closeDialog()">
+  <div class="category-type__modal-dialog" (click)="$event.stopPropagation()">
+    <div class="category-type__modal-header">
+      <div class="category-type__modal-title text-uppercase text-white">        
+        <h2>{{ isEditing ? 'Sửa loại danh mục' : 'Thêm loại danh mục mới' }}</h2>
+      </div>
+      <button class="category-type__modal-close" (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+    <div class="category-type__modal-body">
+      <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" class="category-type__form">
+        <div class="category-type__form-field">
+          <mat-form-field appearance="outline" class="category-type__form-input">
+            <mat-label>Tên loại danh mục *</mat-label>
+            <input matInput 
+                   formControlName="name" 
+                   placeholder="Nhập tên loại danh mục"
+                   [class.category-type__form-input--error]="isFieldInvalid(categoryForm, 'name')">
+            <mat-error *ngIf="isFieldInvalid(categoryForm, 'name')">
+              {{ getFieldError(categoryForm, 'name') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="category-type__form-field">
+          <mat-form-field appearance="outline" class="category-type__form-input">
+            <mat-label>Mô tả</mat-label>
+            <textarea matInput 
+                      formControlName="description" 
+                      rows="3" 
+                      placeholder="Nhập mô tả chi tiết"></textarea>
+          </mat-form-field>
+        </div>
+        
+        <div class="category-type__form-field">
+          <div class="category-type__status-toggle">
+            <label class="category-type__status-label">Trạng thái</label>
+            <mat-slide-toggle formControlName="isActive" color="primary" class="category-type__toggle">
+              {{ categoryForm.get('isActive')?.value ? 'Hoạt động' : 'Không hoạt động' }}
+            </mat-slide-toggle>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeDialog()">Hủy</button>
+          <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid || isSubmitting">
+            <app-custom-spinner *ngIf="isSubmitting" size="small"></app-custom-spinner>
+            <span *ngIf="!isSubmitting">{{ isEditing ? 'Cập nhật' : 'Lưu' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,309 @@
+/* Category Type Responsive Styles */
+/* File này chứa responsive styles cho category type */
+
+@import '../../../core/styles/variables.scss';
+@import '../../../core/styles/mixins.scss';
+
+/* ===== MOBILE FIRST APPROACH ===== */
+@include mobile {
+  .category-type {   
+    &__header {
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      
+      &-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      &-title {
+        h1 {
+          font-size: $font-size-2xl;
+        }
+      }
+      
+      &-icon {
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+      }
+      
+      &-subtitle {
+        font-size: 1rem;
+      }
+      
+      &-add-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    &__filters {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      
+      &-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      &-field {
+        min-width: 100%;
+      }
+      
+      &-actions {
+        justify-content: center;
+      }
+    }
+    
+    &__stats {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    &__stat-card {
+      padding: 1rem;
+      
+      &-icon {
+        width: 50px;
+        height: 50px;
+        
+        mat-icon {
+          font-size: 1.5rem;
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
+      
+      &-content {
+        h3 {
+          font-size: 1.5rem;
+        }
+        
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+    
+    &__empty-state {
+      padding: 2rem 1rem;
+      
+      &-icon {
+        font-size: 3rem;
+        width: 3rem;
+        height: 3rem;
+      }
+      
+      &-title {
+        font-size: 1.25rem;
+      }
+      
+      &-subtitle {
+        font-size: 0.9rem;
+      }
+    }
+    
+    &__table-header {
+      padding: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+      
+      h3 {
+        font-size: 1.1rem;
+      }
+      
+      &-count {
+        font-size: 0.8rem;
+      }
+    }
+    
+    &__table {
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+      }
+      
+      .mat-mdc-header-cell {
+        &:nth-child(3),
+        &:nth-child(4) {
+          display: none;
+        }
+      }
+      
+      .mat-mdc-cell {
+        &:nth-child(3),
+        &:nth-child(4) {
+          display: none;
+        }
+      }
+    }
+    
+    &__column-header {
+      mat-icon {
+        font-size: 1rem;
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+    
+    &__action-buttons {
+      gap: 0.25rem;
+    }
+    
+    &__action-btn {
+      width: 35px;
+      height: 35px;
+      
+      mat-icon {
+        font-size: 1rem;
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+    
+    &__modal-dialog {
+      margin: 1rem;
+      max-height: 95vh;
+    }
+    
+    &__modal-header {
+      padding: 1rem;
+    }
+    
+    &__modal-title {
+      h2 {
+        font-size: 1.1rem;
+      }
+      
+      mat-icon {
+        font-size: 1.1rem;
+        width: 1.1rem;
+        height: 1.1rem;
+      }
+    }
+    
+    &__modal-body {
+      padding: 1rem;
+    }
+    
+    &__form-field {
+      margin-bottom: 1rem;
+    }
+    
+    &__modal-footer {
+      padding: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      .category-type__modal-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+/* ===== TABLET BREAKPOINT ===== */
+@include tablet {
+  .category-type {
+    &__header {
+      padding: 1.75rem;
+      
+      &-title {
+        h1 {
+          font-size: 1.75rem;
+        }
+      }
+    }
+    
+    &__filters {
+      &-row {
+        flex-wrap: wrap;
+      }
+      
+      &-field {
+        min-width: 200px;
+      }
+    }
+    
+    &__stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+    
+    &__table {
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding: 0.875rem;
+      }
+    }
+  }
+}
+
+/* ===== DESKTOP BREAKPOINT ===== */
+@include desktop {
+  .category-type {   
+    &__header {
+      padding: 2rem;
+      
+      &-title {
+        h1 {
+          font-size: $font-size-2xl;
+        }
+      }
+    }
+    
+    &__filters {
+      &-row {
+        align-items: end;
+      }
+    }
+    
+    &__stats {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    
+    &__table {
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding: 1rem;
+      }
+    }
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .category-type {
+    background: white;
+    padding: 0;
+    
+    &__header,
+    &__filters,
+    &__stats,
+    &__action-buttons {
+      display: none;
+    }
+    
+    &__table-container {
+      box-shadow: none;
+      border: 1px solid #ddd;
+    }
+    
+    &__table {
+      .mat-mdc-header-row {
+        background: #f8f9fa !important;
+      }
+      
+      .mat-mdc-row {
+        border-bottom: 1px solid #ddd;
+      }
+    }
+  }
+} 

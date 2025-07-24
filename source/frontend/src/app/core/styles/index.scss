@@ -1,0 +1,36 @@
+/* ===== CORE STYLES INDEX ===== */
+/* File này import tất cả core styles */
+
+/* Import Bootstrap 5 */
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+
+/* Import Core Variables và Mixins */
+@import 'variables';
+@import 'mixins';
+
+/* Override Bootstrap variables với custom theme */
+$primary: $primary-brown;
+$secondary: $primary-orange;
+$success: $success;
+$info: $info;
+$warning: $warning;
+$danger: $danger;
+$light: $light-gray;
+$dark: $dark-gray;
+
+/* Import Bootstrap Components */
+@import 'bootstrap/scss/bootstrap';
+
+/* Import Core Components */
+@import 'components';
+
+/* Import Responsive Styles */
+@import 'responsive';
+
+/* Import Material Design Optimization */
+@import 'material-optimization';
+
+/* Import Global Styles */
+@import 'global';

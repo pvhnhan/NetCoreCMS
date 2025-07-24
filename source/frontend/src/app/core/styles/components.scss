@@ -1,0 +1,524 @@
+/* ===== CORE COMPONENTS STYLES ===== */
+/* File này chứa các styles chung cho toàn bộ ứng dụng */
+/* Các module-specific styles sẽ được viết trong file style.scss của từng module */
+
+@import './variables.scss';
+@import './mixins.scss';
+
+/* ===== SECTION TITLE MIXIN ===== */
+@mixin section-title {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-bold;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 6px;
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  padding-bottom: $spacing-sm;
+  color: transparent !important;
+  border-bottom: none; // Đảm bảo không có border-bottom
+  margin-bottom: $spacing-lg;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    max-width: 30%;
+    height: 2px;
+    background: $gradient-primary;
+    border-radius: 1px;
+    animation: slideIn 0.8s ease-out 0.3s forwards;
+  }
+  
+  @include md {
+    font-size: $font-size-2xl;
+    &::after {
+      width: 60px;
+      max-width: 50%;
+    }
+  }
+}
+
+h2.section-title, .section-title {
+  @include section-title;
+  
+  // Đảm bảo chỉ có 1 line gạch dưới từ &::after
+  border-bottom: none !important;
+  text-decoration: none !important;
+  
+  // Loại bỏ tất cả pseudo-elements khác có thể tạo line gạch dưới
+  &::before {
+    display: none !important;
+  }
+  
+  // Chỉ giữ lại &::after từ mixin section-title
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    max-width: 30%;
+    height: 2px;
+    background: $gradient-primary;
+    border-radius: 1px;
+    animation: slideIn 0.8s ease-out 0.3s forwards;
+  }
+}
+
+// ===== STATUS BADGE MIXIN =====
+@mixin status-badge {
+  display: inline-block;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &.active {
+    background: rgba($success, 0.1);
+    color: $success;
+  }
+  
+  &.inactive {
+    background: rgba($gray, 0.1);
+    color: $gray;
+  }
+}
+
+// ===== BUTTON HOVER EFFECT MIXIN =====
+@mixin button-hover-effect {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+// ===== BUTTON BASE MIXIN =====
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-lg;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  transition: all $transition-normal;
+  background: transparent;
+  color: $primary-brown;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background: $gradient-primary;
+  color: $white;
+  border-color: $primary-brown;
+  box-shadow: $shadow-md;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+    border-color: $primary-orange;
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background: transparent;
+  color: $primary-brown;
+  border: 2px solid $primary-brown;
+  
+  &:hover:not(:disabled) {
+    background: $primary-brown;
+    color: $white;
+    transform: translateY(-2px);
+    border-color: $primary-orange;
+  }
+}
+
+@mixin button-outline {
+  @include button-base;
+  background: transparent;
+  color: $primary-orange;
+  border: 2px solid $primary-orange;
+  
+  &:hover:not(:disabled) {
+    background: $primary-orange;
+    color: $white;
+    transform: translateY(-2px);
+    border-color: $primary-brown;
+  }
+}
+
+// ===== BUTTON OUTLINE CUSTOM MIXIN (for backward compatibility) =====
+@mixin button-outline-custom($color, $bg-color) {
+  @include button-base;
+  background: $bg-color;
+  color: $color;
+  border: 2px solid $color;
+  box-shadow: $shadow-sm;
+  
+  &:hover {
+    background: $color;
+    color: $bg-color;
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+// ===== BUTTON OUTLINE HOVER MIXIN =====
+@mixin button-outline-hover($color, $bg-color) {
+  background: $color;
+  color: $bg-color;
+  border-color: $color;
+  transform: translateY(-2px);
+  box-shadow: $shadow-md;
+}
+
+// ===== BUTTON GRADIENT MIXIN =====
+@mixin button-gradient($gradient) {
+  background: $gradient;
+  color: $white;
+  border-color: $primary-brown;
+  box-shadow: $shadow-md;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+    border-color: $primary-orange;
+  }
+}
+
+// ===== RESPONSIVE MIXIN =====
+// Responsive styles được chuyển sang file responsive.scss
+@mixin responsive($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: 575.98px) {
+      @content;
+    }
+  } @else if $breakpoint == sm {
+    @media (max-width: 767.98px) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @media (max-width: 991.98px) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (max-width: 1199.98px) {
+      @content;
+    }
+  } @else if $breakpoint == xl {
+    @media (max-width: 1399.98px) {
+      @content;
+    }
+  }
+}
+
+// ===== COMMON PAGE HEADER =====
+.page-header {
+  @include flex-between;
+  margin-bottom: $spacing-xl;
+  
+  .page-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $primary-brown;
+    margin: 0;
+  }
+  
+  .header-actions {
+    @include flex-center;
+    gap: $spacing-md;
+    
+    .add-btn {
+      @include button-gradient($gradient-primary);
+      padding: $spacing-sm $spacing-lg;
+      font-size: $font-size-base;
+      
+      &:hover {
+        background: $gradient-primary-reverse;
+        transform: translateY(-2px);
+        box-shadow: $shadow-xl;
+      }
+    }
+  }
+  
+  // Responsive styles được chuyển sang responsive.scss
+}
+
+// ===== COMMON TABLE STYLES =====
+.common-table {
+  width: 100%;
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+  
+  .mat-mdc-header-row {
+    background: linear-gradient(135deg, $light-gray 0%, #e9ecef 100%);
+    
+    .mat-mdc-header-cell {
+      color: $primary-brown;
+      font-weight: $font-weight-bold;
+      font-size: $font-size-base;
+      padding: $spacing-md $spacing-lg;
+      border-bottom: 2px solid rgba($primary-brown, 0.1);
+    }
+  }
+  
+  .mat-mdc-row {
+    transition: $transition-normal;
+    
+    &:hover {
+      background: rgba($primary-brown, 0.02);
+    }
+    
+    .mat-mdc-cell {
+      padding: $spacing-md $spacing-lg;
+      color: $primary-brown;
+      font-size: $font-size-base;
+      border-bottom: 1px solid rgba($primary-brown, 0.05);
+    }
+  }
+  
+  .mat-mdc-row:last-child .mat-mdc-cell {
+    border-bottom: none;
+  }
+  
+  @include responsive(md) {
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      padding: $spacing-sm;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+// ===== COMMON ACTION BUTTONS =====
+.action-buttons {
+  @include flex-center;
+  gap: $spacing-sm;
+  
+  .edit-btn {
+    @include button-base;
+    background: transparent;
+    color: $secondary-brown;
+    border: 1px solid $secondary-brown;
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+    border-radius: $border-radius-sm;
+    
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+    
+    &:hover {
+      background: $secondary-brown;
+      color: $white;
+      transform: translateY(-1px);
+      border-color: $primary-orange;
+    }
+  }
+  
+  .delete-btn {
+    @include button-base;
+    background: transparent;
+    color: $danger;
+    border: 1px solid $danger;
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+    border-radius: $border-radius-sm;
+    
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+    
+    &:hover {
+      background: $danger;
+      color: $white;
+      transform: translateY(-1px);
+      border-color: darken($danger, 10%);
+    }
+  }
+  
+  @include responsive(md) {
+    flex-direction: column;
+    gap: $spacing-xs;
+    
+    .edit-btn,
+    .delete-btn {
+      padding: $spacing-xs;
+      
+      mat-icon {
+        font-size: $font-size-base;
+        width: $font-size-base;
+        height: $font-size-base;
+      }
+    }
+  }
+}
+
+// ===== COMMON MODAL STYLES =====
+.common-modal {
+  .modal-header {
+    @include flex-between;
+    margin-bottom: $spacing-lg;
+    
+    .modal-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $primary-brown;
+      margin: 0;
+    }
+    
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: $gray;
+      font-size: $font-size-xl;
+      cursor: pointer;
+      padding: $spacing-xs;
+      border-radius: $border-radius-sm;
+      transition: $transition-normal;
+      
+      &:hover {
+        color: $danger;
+        background: rgba($danger, 0.1);
+      }
+    }
+  }
+  
+  .form-group {
+    margin-bottom: $spacing-lg;
+    
+    label {
+      display: block;
+      font-weight: $font-weight-semibold;
+      color: $primary-brown;
+      margin-bottom: $spacing-sm;
+      font-size: $font-size-base;
+    }
+    
+    input, textarea, select {
+      @include input-base;
+      width: 100%;
+      
+      &:focus {
+        border-color: $primary-orange;
+        box-shadow: 0 0 0 3px rgba($primary-orange, 0.1);
+      }
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+  }
+  
+  .modal-actions {
+    @include flex-end;
+    gap: $spacing-md;
+    margin-top: $spacing-xl;
+    
+    .cancel-btn {
+      @include button-outline-custom($gray, $white);
+      padding: $spacing-sm $spacing-lg;
+      
+      &:hover {
+        @include button-outline-hover($dark-gray, $light-gray);
+      }
+    }
+    
+    .save-btn {
+      @include button-gradient($gradient-primary);
+      padding: $spacing-sm $spacing-lg;
+      
+      &:hover {
+        background: $gradient-primary-reverse;
+        transform: translateY(-2px);
+        box-shadow: $shadow-xl;
+      }
+    }
+  }
+}
+
+// ===== COMMON CARD STYLES =====
+.common-card {
+  @include card-base;
+  @include card-hover;
+  padding: $spacing-xl;
+  
+  @include responsive(md) {
+    padding: $spacing-lg;
+  }
+}
+
+// ===== COMMON GRID STYLES =====
+.common-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-lg;
+  
+  @include responsive(md) {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+}
+
+// ===== ANIMATIONS =====
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1);
+  }
+} 

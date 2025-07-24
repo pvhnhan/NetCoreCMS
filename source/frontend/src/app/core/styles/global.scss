@@ -1,0 +1,364 @@
+/* ===== GLOBAL STYLES ===== */
+/* File này chứa các styles chung cho toàn bộ ứng dụng */
+/* Sử dụng Bootstrap 5 classes và extend khi cần thiết */
+
+@import './variables.scss';
+@import './mixins.scss';
+
+/* ===== RESET & BASE STYLES ===== */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: $font-family-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: $light-gray;
+  color: $dark-gray;
+  line-height: $line-height-normal;
+}
+
+/* ===== HEADER STYLES ===== */
+.canva-header {
+  @extend .navbar;
+  @extend .navbar-expand-lg;
+  @extend .navbar-light;
+  @extend .shadow-sm;
+  @extend .fixed-top;
+  background: #FFFFFF;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  
+  .header-container {
+    @extend .container;
+    @extend .d-flex;
+    @extend .justify-content-between;
+    @extend .align-items-center;
+    padding: $spacing-md 0;
+  }
+  
+  .header-brand {
+    @extend .navbar-brand;
+    
+    .brand-logo {
+      @extend .d-flex;
+      @extend .align-items-center;
+      @extend .text-decoration-none;
+      gap: $spacing-md;
+      
+      .logo-text {
+        @extend .h3;
+        @extend .mb-0;
+        color: $primary-brown; /* Màu nâu cho text trên gradient nhẹ */
+        font-weight: $font-weight-bold;
+        
+        .cms-text {
+          color: $primary-brown; /* Màu nâu đậm cho "CMS" */
+        }
+        
+        .admin-system-text {
+          color: $primary-brown; /* Màu nâu cho "QUẢN TRỊ HỆ THỐNG" */
+        }
+      }
+    }
+  }
+  
+  .header-nav {
+    @extend .navbar-nav;
+    @extend .ms-auto;
+    @extend .mb-2;
+    @extend .mb-lg-0;
+    @extend .text-end;
+    
+    .nav-item {
+      @extend .nav-link;
+      @extend .px-3;
+      @extend .py-2;
+      @extend .rounded;
+      @extend .text-decoration-none;
+      color: $primary-brown; /* Màu nâu cho nav items */
+      font-weight: $font-weight-medium;
+      font-size: 1.125rem; /* Tăng font-size cho menu nav */
+      transition: all $transition-normal;
+      position: relative;
+      
+      &:hover {
+        background-color: rgba(139, 69, 19, 0.1);
+        color: $primary-orange;
+      }
+      
+      &.active {
+        color: $primary-brown;
+        font-weight: $font-weight-semibold;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 20px;
+          height: 2px;
+          background: $gradient-primary;
+          border-radius: 1px;
+        }
+      }
+    }
+  }
+  
+  .header-actions {
+    @extend .d-flex;
+    @extend .align-items-center;
+    gap: $spacing-lg;
+    
+    .login-btn {
+      @extend .btn;
+      @extend .btn-outline-primary; /* Đổi lại về outline-primary */
+      @extend .d-flex;
+      @extend .align-items-center;
+      gap: $spacing-sm;
+      border-color: $primary-brown;
+      color: $primary-brown;
+      font-size: 1.125rem; /* Tăng font-size cho login button */
+      
+      &:hover {
+        background-color: $primary-brown;
+        border-color: $primary-orange;
+        color: $white;
+      }
+    }
+    
+    .signup-btn {
+      @extend .btn;
+      @extend .btn-primary; /* Đổi lại về btn-primary */
+      @extend .d-flex;
+      @extend .align-items-center;
+      gap: $spacing-sm;
+      font-size: 1.125rem; /* Tăng font-size cho signup button */
+      @include button-gradient($gradient-primary);
+      border-color: $primary-brown;
+      
+      &:hover {
+        border-color: $primary-orange;
+      }
+    }
+    
+    .user-menu-trigger {
+      @extend .btn;
+      @extend .btn-link;
+      @extend .d-flex;
+      @extend .align-items-center;
+      gap: $spacing-sm;
+      color: $primary-brown; /* Màu nâu cho user menu */
+      text-decoration: none;
+      padding: $spacing-sm $spacing-md;
+      
+      &:hover {
+        background-color: rgba(139, 69, 19, 0.1);
+        color: $primary-orange;
+      }
+      
+      .user-avatar {
+        @extend .rounded-circle;
+        width: 32px;
+        height: 32px;
+        @include gradient-brand; /* Đổi lại về gradient */
+        @extend .d-flex;
+        @extend .align-items-center;
+        @extend .justify-content-center;
+        color: $white;
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-sm;
+        overflow: hidden;
+        
+        img {
+          @extend .w-100;
+          @extend .h-100;
+          object-fit: cover;
+        }
+        
+        .avatar-icon {
+          font-size: 16px;
+          color: $white;
+          font-weight: $font-weight-normal;
+        }
+        
+        .avatar-text {
+          font-weight: $font-weight-bold;
+          font-size: $font-size-base;
+        }
+      }
+      
+      .username {
+        font-weight: $font-weight-semibold;
+        font-size: 1.125rem; /* Tăng font-size cho username */
+        color: $primary-brown;
+      }
+    }
+  }
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  margin-top: 100px; // Bootstrap navbar height
+  min-height: calc(100vh - 76px);
+  padding: 0;
+  
+  &.admin-main {
+    margin-top: 68px; // Giữ margin-top cho admin dashboard
+    min-height: calc(100vh - 76px);
+  }
+}
+
+/* ===== SCROLL TO TOP BUTTON ===== */
+.scroll-to-top {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .rounded-circle;
+  @extend .position-fixed;
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .justify-content-center;
+  bottom: $spacing-xl;
+  right: $spacing-xl;
+  width: 50px;
+  height: 50px;
+  z-index: $z-index-fixed;
+  background: $gradient-primary;
+  border: none;
+  color: $white;
+  transition: all $transition-normal;
+  
+  i {
+    font-size: 1.25rem;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &:hover {
+    background: $gradient-primary-reverse;
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($primary-brown, 0.3);
+  }
+}
+
+/* ===== GLOBAL LOADING OVERLAY ===== */
+.global-loading-overlay {
+  @extend .position-fixed;
+  @extend .top-0;
+  @extend .start-0;
+  @extend .w-100;
+  @extend .h-100;
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .justify-content-center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: $z-index-modal;
+  
+  .spinner-container {
+    @extend .bg-white;
+    @extend .rounded;
+    @extend .shadow-lg;
+    @extend .p-4;
+    @extend .d-flex;
+    @extend .flex-column;
+    @extend .align-items-center;
+    gap: $spacing-lg;
+    
+    .loading-text {
+      @extend .mb-0;
+      color: $primary-brown;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: linear-gradient(135deg, #F8F9FA 0%, rgba(254, 170, 67, 0.05) 100%);
+  color: $primary-brown;
+  padding: $spacing-lg 0;
+  margin-top: auto;
+  border-top: 1px solid rgba($primary-brown, 0.1);
+  position: relative;
+  
+  .footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 $spacing-2xl;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-xl;
+    
+    @include md {
+      flex-direction: column;
+      gap: $spacing-lg;
+      text-align: center;
+    }
+    
+    .footer-brand {
+      .brand-logo {
+        margin-bottom: $spacing-sm;
+        
+        .logo-text {
+          font-size: $font-size-xl;
+          font-weight: $font-weight-bold;
+          color: $primary-brown;
+        }
+      }
+      
+      .company-desc {
+        color: $gray;
+        font-size: $font-size-sm;
+        margin: 0;
+      }
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: $spacing-xl;
+      
+      @include sm {
+        flex-direction: column;
+        gap: $spacing-md;
+      }
+      
+      .footer-link {
+        color: $primary-brown;
+        text-decoration: none;
+        font-size: $font-size-sm;
+        transition: all $transition-normal;
+        
+        &:hover {
+          color: $primary-orange;
+        }
+      }
+    }
+    
+    .footer-copyright {
+      p {
+        margin: 0;
+        color: $gray;
+        font-size: $font-size-sm;
+      }
+    }
+  }
+} 

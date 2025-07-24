@@ -1,0 +1,99 @@
+<!-- Error/Success Messages -->
+<div *ngIf="errorMessage" class="alert alert-danger">
+  <mat-icon>error</mat-icon>
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="successMessage" class="alert alert-success">
+  <mat-icon>check_circle</mat-icon>
+  {{ successMessage }}
+</div>
+
+<div class="menu">
+  <ng-container *ngIf="isLoading; else mainContent">
+    <div class="menu__loading">
+      <app-custom-spinner message="Đang tải dữ liệu..." size="medium"></app-custom-spinner>
+    </div>
+  </ng-container>
+  <ng-template #mainContent>
+    <!-- Header Section -->
+    <div class="menu__header">
+      <div class="menu__header-content">
+        <div class="menu__header-title">
+          <mat-icon class="menu__header-icon">menu</mat-icon>
+          <div>
+            <h1>Quản lý menu</h1>
+          </div>
+        </div>
+        <div class="menu__header-actions">
+          <app-icon-add-button (click)="openAddDialog()" ariaLabel="Thêm menu"></app-icon-add-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="menus.length === 0" class="menu__empty-state">
+      <div class="menu__empty-content">
+        <mat-icon class="menu__empty-icon">menu</mat-icon>
+        <h3 class="menu__empty-title">Chưa có menu nào</h3>
+        <p class="menu__empty-subtitle">Bắt đầu bằng cách thêm menu đầu tiên</p>
+        <button mat-raised-button color="primary" class="menu__empty-btn" (click)="openAddDialog()">
+          <mat-icon>add</mat-icon>
+          Thêm menu
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu Table -->
+    <div *ngIf="menus.length > 0" class="menu__table-container">
+      <div class="menu__table-header">
+        <h3>Danh sách menu</h3>
+        <span class="menu__table-count">{{ menus.length }} kết quả</span>
+      </div>
+      <app-table [columns]="tableColumns" [data]="menus" (edit)="editMenu($event)" (delete)="deleteMenu($event.id)"></app-table>
+    </div>
+  </ng-template>
+
+  <!-- Add/Edit Menu Modal -->
+  <div *ngIf="showDialog" class="menu__modal-overlay" (click)="closeDialog()">
+    <div class="menu__modal-dialog" (click)="$event.stopPropagation()">
+      <div class="menu__modal-header">
+        <h2 class="menu__modal-title text-uppercase">          
+          {{ isEditing ? 'Sửa menu' : 'Thêm menu mới' }}
+        </h2>
+        <button class="menu__modal-close" (click)="closeDialog()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="menu__modal-body">
+        <form [formGroup]="menuForm" (ngSubmit)="saveMenu()" class="menu__form">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Tên menu</mat-label>
+            <input matInput formControlName="name" placeholder="Nhập tên menu">
+            <mat-error *ngIf="isFieldInvalid(menuForm, 'name')">{{ getFieldError(menuForm, 'name') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Mô tả</mat-label>
+            <textarea matInput formControlName="description" placeholder="Nhập mô tả menu" rows="2"></textarea>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Vị trí</mat-label>
+            <input matInput formControlName="position" placeholder="Nhập vị trí menu (tùy chọn)">
+          </mat-form-field>
+          <div class="form-options">
+            <mat-slide-toggle formControlName="isActive" class="option-toggle">
+              {{ menuForm.get('isActive')?.value ? 'Hoạt động' : 'Không hoạt động' }}
+            </mat-slide-toggle>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeDialog()">Hủy</button>
+            <button type="submit" class="btn btn-primary" [disabled]="menuForm.invalid || isSubmitting">
+              <app-custom-spinner *ngIf="isSubmitting" size="small"></app-custom-spinner>
+              <span *ngIf="!isSubmitting">{{ isEditing ? 'Cập nhật' : 'Thêm menu' }}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 

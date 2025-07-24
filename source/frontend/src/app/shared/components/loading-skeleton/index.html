@@ -1,0 +1,28 @@
+<div class="loading-skeleton" [ngClass]="type">
+  <div class="loading-skeleton__container">
+    <!-- Pulse animation -->
+    <div class="loading-skeleton__pulse"></div>
+    
+    <!-- Content skeleton -->
+    <div class="loading-skeleton__content">
+      <div class="loading-skeleton__header" *ngIf="showHeader">
+        <div class="loading-skeleton__title"></div>
+        <div class="loading-skeleton__subtitle"></div>
+      </div>
+      
+      <div class="loading-skeleton__body">
+        <div class="loading-skeleton__item" *ngFor="let item of itemsArray; trackBy: trackByFn"></div>
+      </div>
+    </div>
+    
+    <!-- Loading text -->
+    <div class="loading-skeleton__text" *ngIf="showText">
+      <div class="loading-skeleton__dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p>{{ loadingText }}</p>
+    </div>
+  </div>
+</div> 

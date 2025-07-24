@@ -1,0 +1,563 @@
+/* ===== ADMIN SHARED STYLES ===== */
+/* File này chứa styles chung cho tất cả admin modules (không responsive) */
+/* Responsive styles sẽ được viết trong admin.responsive.scss */
+
+@import '../../core/styles/variables.scss';
+@import '../../core/styles/mixins.scss';
+@import '../../core/styles/components.scss';
+
+/* ===== ADMIN LAYOUT STRUCTURE ===== */
+/* Cấu trúc 2 cột: Sidebar + Content Area */
+.admin-data-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: $gradient-primary;
+}
+
+.admin-container {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  margin-top: $header-height;
+  margin-top: 30px;
+}
+
+.admin-sidenav-container {
+  flex: 1;
+  background: transparent;
+}
+
+.admin-sidenav {
+  width: 280px;
+  background: $white;
+  border-right: 1px solid rgba($primary-brown, 0.1);
+  box-shadow: $shadow-md;
+  position: fixed;
+  top: $header-height !important;
+  left: 0;
+  height: calc(100vh - #{$header-height});
+  z-index: $z-index-sticky;
+}
+
+.admin-content {
+  margin-left: 280px;
+  padding: $spacing-lg;
+  min-height: 100vh;
+  background: $light-gray;
+  width: calc(100% - 280px);
+}
+
+// ===== ADMIN HEADER =====
+.admin-header {
+  background: $gradient-primary;
+  border-bottom: 1px solid rgba($primary-brown, 0.1);
+  box-shadow: $shadow-md;
+  z-index: $z-index-fixed;
+  height: $header-height;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+// ===== ADMIN PAGE HEADER =====
+.admin-page-header {
+  @include flex-between;
+  margin-bottom: $spacing-xl;
+  
+  .page-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $primary-brown;
+    margin: 0;
+  }
+  
+  .header-actions {
+    @include flex-center;
+    gap: $spacing-md;
+    
+    .add-btn {
+      @include button-gradient($gradient-primary);
+      padding: $spacing-sm $spacing-lg;
+      font-size: $font-size-base;
+      
+      &:hover {
+        background: $gradient-primary-reverse;
+        transform: translateY(-2px);
+        box-shadow: $shadow-xl;
+      }
+    }
+  }
+}
+
+// ===== ADMIN PAGE HEADER =====
+.admin-page-header {
+  @include flex-between;
+  margin-bottom: $spacing-xl;
+  
+  .page-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $primary-brown;
+    margin: 0;
+  }
+  
+  .header-actions {
+    @include flex-center;
+    gap: $spacing-md;
+    
+    .add-btn {
+      @include button-gradient($gradient-primary);
+      padding: $spacing-sm $spacing-lg;
+      font-size: $font-size-base;
+      
+      &:hover {
+        background: $gradient-primary-reverse;
+        transform: translateY(-2px);
+        box-shadow: $shadow-xl;
+      }
+    }
+  }
+}
+
+// ===== ADMIN BUTTON STYLES =====
+// Các button styles chung cho tất cả admin modules
+
+.admin-btn {
+  @include button-base;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all $transition-normal;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.admin-btn-primary {
+  @include button-gradient($gradient-primary);
+  
+  &:hover:not(:disabled) {
+    background: $gradient-primary-reverse;
+    transform: translateY(-2px);
+    box-shadow: $shadow-xl;
+  }
+}
+
+.admin-btn-secondary {
+  background: transparent;
+  color: $primary-brown;
+  border: 2px solid $primary-brown;
+  
+  &:hover:not(:disabled) {
+    background: $primary-brown;
+    color: $white;
+    transform: translateY(-2px);
+  }
+}
+
+.admin-btn-success {
+  background: $success;
+  color: $white;
+  border: 2px solid $success;
+  
+  &:hover:not(:disabled) {
+    background: darken($success, 10%);
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.admin-btn-danger {
+  background: $danger;
+  color: $white;
+  border: 2px solid $danger;
+  
+  &:hover:not(:disabled) {
+    background: darken($danger, 10%);
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.admin-btn-outline {
+  background: transparent;
+  color: $primary-brown;
+  border: 2px solid $primary-brown;
+  
+  &:hover:not(:disabled) {
+    background: $primary-brown;
+    color: $white;
+    transform: translateY(-2px);
+  }
+}
+
+// ===== ADMIN ACTION BUTTONS =====
+.admin-action-buttons {
+  @include flex-center;
+  gap: $spacing-sm;
+  
+  .edit-btn {
+    @include button-base;
+    background: transparent;
+    color: $secondary-brown;
+    border: 1px solid $secondary-brown;
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+    border-radius: $border-radius-sm;
+    
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+    
+    &:hover {
+      background: $secondary-brown;
+      color: $white;
+      transform: translateY(-1px);
+    }
+  }
+  
+  .delete-btn {
+    @include button-base;
+    background: transparent;
+    color: $danger;
+    border: 1px solid $danger;
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+    border-radius: $border-radius-sm;
+    
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+    
+    &:hover {
+      background: $danger;
+      color: $white;
+      transform: translateY(-1px);
+    }
+  }
+  
+  .view-btn {
+    @include button-base;
+    background: transparent;
+    color: $info;
+    border: 1px solid $info;
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+    border-radius: $border-radius-sm;
+    
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+    
+    &:hover {
+      background: $info;
+      color: $white;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// ===== ADMIN CARD GRID =====
+.admin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $spacing-lg;
+}
+
+.admin-card {
+  @include card-base;
+  @include card-hover;
+  overflow: hidden;
+  position: relative;
+  
+  .card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: $border-radius-lg $border-radius-lg 0 0;
+  }
+  
+  .card-content {
+    padding: $spacing-lg;
+    
+    .card-title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      color: $primary-brown;
+      margin: 0 0 $spacing-sm 0;
+    }
+    
+    .card-description {
+      color: $gray;
+      font-size: $font-size-base;
+      line-height: $line-height-relaxed;
+      margin: 0 0 $spacing-md 0;
+    }
+    
+    .card-meta {
+      @include flex-between;
+      margin-bottom: $spacing-md;
+      
+      .card-status {
+        @include status-badge;
+      }
+      
+      .card-date {
+        color: $gray;
+        font-size: $font-size-sm;
+      }
+    }
+    
+    .card-actions {
+      @include flex-center;
+      gap: $spacing-sm;
+      
+      .edit-btn {
+        @include button-base;
+        background: transparent;
+        color: $secondary-brown;
+        border: 1px solid $secondary-brown;
+        padding: $spacing-xs $spacing-sm;
+        font-size: $font-size-sm;
+        border-radius: $border-radius-sm;
+        
+        mat-icon {
+          font-size: $font-size-lg;
+          width: $font-size-lg;
+          height: $font-size-lg;
+        }
+        
+        &:hover {
+          background: $secondary-brown;
+          color: $white;
+          transform: translateY(-1px);
+        }
+      }
+      
+      .delete-btn {
+        @include button-base;
+        background: transparent;
+        color: $danger;
+        border: 1px solid $danger;
+        padding: $spacing-xs $spacing-sm;
+        font-size: $font-size-sm;
+        border-radius: $border-radius-sm;
+        
+        mat-icon {
+          font-size: $font-size-lg;
+          width: $font-size-lg;
+          height: $font-size-lg;
+        }
+        
+        &:hover {
+          background: $danger;
+          color: $white;
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+}
+
+// ===== ADMIN TABLE =====
+.admin-table {
+  width: 100%;
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+  
+  .mat-mdc-header-row {
+    background: linear-gradient(135deg, $light-gray 0%, #e9ecef 100%);
+    
+    .mat-mdc-header-cell {
+      color: $primary-brown;
+      font-weight: $font-weight-bold;
+      font-size: $font-size-base;
+      padding: $spacing-md $spacing-lg;
+      border-bottom: 2px solid rgba($primary-brown, 0.1);
+    }
+  }
+  
+  .mat-mdc-row {
+    transition: $transition-normal;
+    
+    &:hover {
+      background: rgba($primary-brown, 0.02);
+    }
+    
+    .mat-mdc-cell {
+      padding: $spacing-md $spacing-lg;
+      color: $primary-brown;
+      font-size: $font-size-base;
+      border-bottom: 1px solid rgba($primary-brown, 0.05);
+    }
+  }
+  
+  .mat-mdc-row:last-child .mat-mdc-cell {
+    border-bottom: none;
+  }
+}
+
+// ===== ADMIN MODAL =====
+.admin-modal {
+  .modal-header {
+    @include flex-between;
+    margin-bottom: $spacing-lg;
+    
+    .modal-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $primary-brown;
+      margin: 0;
+    }
+    
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: $gray;
+      font-size: $font-size-xl;
+      cursor: pointer;
+      padding: $spacing-xs;
+      border-radius: $border-radius-sm;
+      transition: $transition-normal;
+      
+      &:hover {
+        color: $danger;
+        background: rgba($danger, 0.1);
+      }
+    }
+  }
+  
+  .form-group {
+    margin-bottom: $spacing-lg;
+    
+    label {
+      display: block;
+      font-weight: $font-weight-semibold;
+      color: $primary-brown;
+      margin-bottom: $spacing-sm;
+      font-size: $font-size-base;
+    }
+    
+    input, textarea, select {
+      @include input-base;
+      width: 100%;
+      
+      &:focus {
+        border-color: $primary-orange;
+        box-shadow: 0 0 0 3px rgba($primary-orange, 0.1);
+      }
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .error-message {
+      color: $danger;
+      font-size: $font-size-sm;
+      margin-top: $spacing-xs;
+    }
+  }
+  
+  .modal-footer {
+    @include flex-between;
+    gap: $spacing-md;
+    margin-top: $spacing-xl;
+  }
+}
+
+// ===== ADMIN EMPTY STATE =====
+.admin-empty-state {
+  @include flex-column-center;
+  padding: $spacing-3xl;
+  text-align: center;
+  
+  .empty-icon {
+    font-size: $font-size-5xl;
+    color: $gray;
+    margin-bottom: $spacing-lg;
+  }
+  
+  .empty-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $primary-brown;
+    margin: 0 0 $spacing-sm 0;
+  }
+  
+  .empty-subtitle {
+    color: $gray;
+    font-size: $font-size-base;
+    margin: 0 0 $spacing-lg 0;
+  }
+}
+
+// ===== ADMIN LOADING STATE =====
+.admin-loading {
+  @include flex-center;
+  padding: $spacing-3xl;
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba($primary-brown, 0.1);
+    border-top: 3px solid $primary-brown;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  .loading-text {
+    margin-top: $spacing-md;
+    color: $primary-brown;
+    font-weight: $font-weight-medium;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ===== ADMIN STATUS BADGE =====
+.admin-status-badge {
+  display: inline-block;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &.active {
+    background: rgba($success, 0.1);
+    color: $success;
+  }
+  
+  &.inactive {
+    background: rgba($gray, 0.1);
+    color: $gray;
+  }
+  
+  &.pending {
+    background: rgba($warning, 0.1);
+    color: $warning;
+  }
+  
+  &.error {
+    background: rgba($danger, 0.1);
+    color: $danger;
+  }
+} 

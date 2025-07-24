@@ -1,0 +1,430 @@
+/* ===== LOGIN MODULE RESPONSIVE STYLES ===== */
+/* File này chứa responsive styles cho login module */
+
+@import '../../../core/styles/variables';
+@import '../../../core/styles/mixins';
+
+/* ===== LOGIN CONTAINER RESPONSIVE ===== */
+@include mobile {
+  .login-container {
+    max-width: 100%;
+    border-radius: 0;
+    height: auto;
+    overflow: visible;
+  }
+}
+
+/* ===== LOGIN CONTENT RESPONSIVE ===== */
+@include mobile {
+  .login-content {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+}
+
+/* ===== LOGIN LEFT COLUMN RESPONSIVE ===== */
+@include mobile {
+  .login-left {
+    padding: $spacing-xl $spacing-lg;
+    min-height: 150px;
+  }
+}
+
+/* ===== LOGIN IMAGE PLACEHOLDER RESPONSIVE ===== */
+@include mobile {
+  .image-placeholder {
+    mat-icon {
+      font-size: 60px;
+      width: 60px;
+      height: 60px;
+      margin-bottom: $spacing-lg;
+    }
+    
+    h3 {
+      font-size: $font-size-xl;
+      margin-bottom: $spacing-md;
+    }
+    
+    p {
+      font-size: $font-size-sm;
+      max-width: 250px;
+    }
+  }
+}
+
+/* ===== LOGIN RIGHT COLUMN RESPONSIVE ===== */
+@include mobile {
+  .login-right {
+    padding: $spacing-xl $spacing-lg;
+    min-height: 350px;
+  }
+}
+
+/* ===== LOGIN FORM RESPONSIVE ===== */
+@include mobile {
+  .login-form-container {
+    .login-header {
+      margin-bottom: $spacing-xl;
+      
+      .login-title {
+        font-size: $font-size-2xl;
+        margin-bottom: $spacing-md;
+      }
+      
+      .login-subtitle {
+        font-size: $font-size-base;
+      }
+    }
+  }
+}
+
+/* ===== LOGIN FORM FIELDS RESPONSIVE ===== */
+@include mobile {
+  .login-form {
+    .form-field {
+      margin-bottom: $spacing-md;
+      
+      .mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* ===== LOGIN ACTIONS RESPONSIVE ===== */
+@include mobile {
+  .login-actions {
+    flex-direction: column;
+    gap: $spacing-md;
+    
+    .login-btn {
+      width: 100%;
+      padding: $spacing-md;
+      font-size: $font-size-base;
+    }
+    
+    .forgot-password {
+      text-align: center;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+/* ===== LOGIN FOOTER RESPONSIVE ===== */
+@include mobile {
+  .login-footer {
+    text-align: center;
+    margin-top: $spacing-lg;
+    
+    .register-link {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+/* ===== DEMO SECTION RESPONSIVE ===== */
+@include mobile {
+  .demo-section {
+    margin-bottom: $spacing-lg;
+    
+    .demo-panel {
+      max-height: 240px;
+      
+      ::ng-deep {
+        .mat-mdc-expansion-panel-content {
+          .mat-mdc-expansion-panel-body {
+            max-height: 160px;
+            padding: $spacing-md;
+          }
+        }
+      }
+      
+      .demo-content {
+        .demo-description {
+          font-size: $font-size-xs;
+          margin-bottom: $spacing-md;
+        }
+        
+        .demo-accounts {
+          gap: $spacing-md;
+          
+          .demo-account {
+            padding: $spacing-md;
+            
+            .account-header {
+              gap: $spacing-sm;
+              margin-bottom: $spacing-sm;
+              
+              .account-icon {
+                width: 32px;
+                height: 32px;
+                font-size: $font-size-lg;
+              }
+              
+              .account-info {
+                h4 {
+                  font-size: $font-size-sm;
+                }
+                
+                p {
+                  font-size: $font-size-xs;
+                }
+              }
+            }
+            
+            .account-credentials {
+              margin-bottom: $spacing-sm;
+              
+              .credential {
+                margin-bottom: $spacing-xs;
+                
+                .label {
+                  font-size: $font-size-xs;
+                }
+                
+                code {
+                  font-size: $font-size-xs;
+                  padding: 2px $spacing-xs;
+                }
+              }
+            }
+            
+            .demo-btn {
+              font-size: $font-size-xs;
+              padding: $spacing-xs $spacing-sm;
+              
+              mat-icon {
+                font-size: $font-size-sm;
+                width: $font-size-sm;
+                height: $font-size-sm;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ===== DEMO SECTION ===== */
+.demo-section {
+  margin-bottom: $spacing-xl;
+  
+  .demo-panel {
+    border: 1px solid rgba($primary-brown, 0.1);
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    max-height: 280px;
+    overflow-y: scroll;
+    
+    ::ng-deep {
+      .mat-mdc-expansion-panel-header {
+        background: rgba($primary-brown, 0.1);
+        border-radius: $border-radius-lg;
+        
+        mat-panel-title {
+          background: $gradient-primary !important;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          background-clip: text !important;
+          font-weight: $font-weight-semibold;
+          
+          .mat-icon {
+            background: $gradient-primary !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            margin-right: $spacing-sm;
+          }
+          
+          span {
+            background: $gradient-primary !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+          }
+        }
+        
+        /* Backup selectors cho Material UI */
+        .mat-mdc-expansion-panel-header-title {
+          background: $gradient-primary !important;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          background-clip: text !important;
+          
+          .mat-icon {
+            background: $gradient-primary !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+          }
+          
+          span {
+            background: $gradient-primary !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+          }
+        }
+      }
+      
+      .mat-mdc-expansion-panel-content {
+        .mat-mdc-expansion-panel-body {
+          padding: $spacing-lg;
+          max-height: 200px;
+          overflow-y: auto;
+          
+          /* Custom scrollbar cho demo content */
+          &::-webkit-scrollbar {
+            width: 6px;
+          }
+          
+          &::-webkit-scrollbar-track {
+            background: rgba($primary-brown, 0.1);
+            border-radius: 3px;
+          }
+          
+          &::-webkit-scrollbar-thumb {
+            background: $gradient-primary;
+            border-radius: 3px;
+            
+            &:hover {
+              background: $gradient-primary-reverse;
+            }
+          }
+          
+          /* Firefox scrollbar */
+          scrollbar-width: thin;
+          scrollbar-color: $gradient-primary rgba($primary-brown, 0.1);
+        }
+      }
+    }
+    
+          .demo-content {
+        .demo-description {
+          color: $gray;
+          font-size: $font-size-sm;
+          margin-bottom: $spacing-lg;
+        }
+        
+        .demo-accounts {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-lg;
+          
+          .demo-account {
+            border: 1px solid rgba($primary-brown, 0.2);
+            border-radius: $border-radius-md;
+            padding: $spacing-lg;
+            background: rgba($primary-brown, 0.05);
+            
+            .account-header {
+              @include flex-center;
+              gap: $spacing-md;
+              margin-bottom: $spacing-md;
+              
+              .account-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                @include flex-center;
+                color: $white;
+                font-size: $font-size-xl;
+                
+                              &.admin {
+                background: $gradient-primary;
+              }
+              
+              &.manager {
+                background: $gradient-primary;
+              }
+              
+              &.editor {
+                background: $gradient-primary;
+              }
+              }
+              
+              .account-info {
+                h4 {
+                  font-weight: $font-weight-semibold;
+                  color: $primary-brown;
+                  margin: 0 0 $spacing-xs 0;
+                  font-size: $font-size-base;
+                }
+                
+                p {
+                  color: $gray;
+                  font-size: $font-size-sm;
+                  margin: 0;
+                }
+              }
+            }
+            
+            .account-credentials {
+              margin-bottom: $spacing-md;
+              
+              .credential {
+                @include flex-between;
+                margin-bottom: $spacing-xs;
+                
+                .label {
+                  font-size: $font-size-sm;
+                  color: $gray;
+                  font-weight: $font-weight-medium;
+                }
+                
+                code {
+                  background: rgba($primary-brown, 0.15);
+                  color: $primary-brown;
+                  padding: $spacing-xs $spacing-sm;
+                  border-radius: $border-radius-sm;
+                  font-size: $font-size-sm;
+                  font-weight: $font-weight-semibold;
+                }
+              }
+            }
+            
+            .demo-btn {
+              width: 100%;
+              border-color: $primary-brown;
+              color: $primary-brown;
+              font-weight: $font-weight-medium;
+              
+              &:hover {
+                background: rgba($primary-brown, 0.1);
+                border-color: $primary-brown;
+                color: $white;
+                background: $primary-brown;
+              }
+              
+              mat-icon {
+                margin-right: $spacing-xs;
+              }
+            }
+          }
+        }
+      }
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 

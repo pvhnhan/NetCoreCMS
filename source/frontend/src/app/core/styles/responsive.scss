@@ -1,0 +1,656 @@
+/* ===== CORE RESPONSIVE STYLES ===== */
+/* File này chứa tất cả responsive styles cho core components */
+
+@import './variables.scss';
+@import './mixins.scss';
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+/* Bootstrap 5 breakpoints */
+$breakpoint-xs: 0;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
+// ===== RESPONSIVE MIXINS =====
+@mixin xs {
+  @media (max-width: 575.98px) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: 992px) and (max-width: 1199.98px) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: 1200px) and (max-width: 1399.98px) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media (min-width: 1400px) {
+    @content;
+  }
+}
+
+// Legacy mixins for backward compatibility
+@mixin mobile {
+  @media (max-width: 767.98px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 992px) {
+    @content;
+  }
+}
+
+@mixin mobile-and-tablet {
+  @media (max-width: 991.98px) {
+    @content;
+  }
+}
+
+@mixin tablet-and-desktop {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+// ===== RESPONSIVE UTILITIES =====
+.hidden-xs {
+  @include xs {
+    display: none !important;
+  }
+}
+
+.hidden-sm {
+  @include sm {
+    display: none !important;
+  }
+}
+
+.hidden-md {
+  @include md {
+    display: none !important;
+  }
+}
+
+.hidden-lg {
+  @include lg {
+    display: none !important;
+  }
+}
+
+.hidden-xl {
+  @include xl {
+    display: none !important;
+  }
+}
+
+.hidden-xxl {
+  @include xxl {
+    display: none !important;
+  }
+}
+
+.visible-xs {
+  display: none !important;
+  @include xs {
+    display: block !important;
+  }
+}
+
+.visible-sm {
+  display: none !important;
+  @include sm {
+    display: block !important;
+  }
+}
+
+.visible-md {
+  display: none !important;
+  @include md {
+    display: block !important;
+  }
+}
+
+.visible-lg {
+  display: none !important;
+  @include lg {
+    display: block !important;
+  }
+}
+
+.visible-xl {
+  display: none !important;
+  @include xl {
+    display: block !important;
+  }
+}
+
+.visible-xxl {
+  display: none !important;
+  @include xxl {
+    display: block !important;
+  }
+}
+
+// ===== RESPONSIVE TYPOGRAPHY =====
+@include mobile {
+  body {
+    font-size: $font-size-base;
+  }
+  
+  h1 { font-size: $font-size-3xl; }
+  h2 { font-size: $font-size-2xl; }
+  h3 { font-size: $font-size-xl; }
+  h4 { font-size: $font-size-lg; }
+  h5 { font-size: $font-size-base; }
+  h6 { font-size: $font-size-sm; }
+}
+
+@include tablet {
+  body {
+    font-size: $font-size-base;
+  }
+  
+  h1 { font-size: $font-size-4xl; }
+  h2 { font-size: $font-size-3xl; }
+  h3 { font-size: $font-size-2xl; }
+  h4 { font-size: $font-size-xl; }
+  h5 { font-size: $font-size-lg; }
+  h6 { font-size: $font-size-base; }
+}
+
+@include desktop {
+  body {
+    font-size: $font-size-base;
+  }
+  
+  h1 { font-size: $font-size-5xl; }
+  h2 { font-size: $font-size-4xl; }
+  h3 { font-size: $font-size-3xl; }
+  h4 { font-size: $font-size-2xl; }
+  h5 { font-size: $font-size-xl; }
+  h6 { font-size: $font-size-lg; }
+}
+
+// ===== RESPONSIVE SPACING =====
+@include mobile {
+  .container {
+    padding-left: $spacing-md;
+    padding-right: $spacing-md;
+  }
+  
+  .section {
+    padding: $spacing-lg 0;
+  }
+  
+  .card {
+    margin-bottom: $spacing-md;
+  }
+}
+
+@include tablet {
+  .container {
+    padding-left: $spacing-lg;
+    padding-right: $spacing-lg;
+  }
+  
+  .section {
+    padding: $spacing-xl 0;
+  }
+  
+  .card {
+    margin-bottom: $spacing-lg;
+  }
+}
+
+@include desktop {
+  .container {
+    padding-left: $spacing-2xl;
+    padding-right: $spacing-2xl;
+  }
+  
+  .section {
+    padding: $spacing-2xl 0;
+  }
+  
+  .card {
+    margin-bottom: $spacing-xl;
+  }
+}
+
+// ===== RESPONSIVE GRID =====
+@include mobile {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+  
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@include tablet {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+  }
+  
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@include desktop {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-xl;
+  }
+  
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// ===== RESPONSIVE NAVIGATION =====
+@include mobile {
+  .nav-menu {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+  
+  .nav-item {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@include tablet {
+  .nav-menu {
+    flex-direction: row;
+    gap: $spacing-md;
+  }
+  
+  .nav-item {
+    width: auto;
+  }
+}
+
+// ===== RESPONSIVE FORMS =====
+@include mobile {
+  .form-group {
+    margin-bottom: $spacing-md;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+}
+
+@include tablet {
+  .form-group {
+    margin-bottom: $spacing-lg;
+  }
+  
+  .form-row {
+    flex-direction: row;
+    gap: $spacing-lg;
+  }
+  
+  .form-actions {
+    flex-direction: row;
+    gap: $spacing-md;
+  }
+}
+
+// ===== RESPONSIVE MODALS =====
+@include mobile {
+  .modal-dialog {
+    width: 95%;
+    margin: $spacing-md;
+    max-height: 90vh;
+  }
+  
+  .modal-body {
+    padding: $spacing-md;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+}
+
+@include tablet {
+  .modal-dialog {
+    width: 90%;
+    max-width: 600px;
+  }
+  
+  .modal-body {
+    padding: $spacing-lg;
+  }
+  
+  .modal-footer {
+    flex-direction: row;
+    gap: $spacing-md;
+  }
+}
+
+// ===== RESPONSIVE TABLES =====
+@include mobile {
+  .table-responsive {
+    overflow-x: auto;
+    
+    table {
+      min-width: 600px;
+    }
+  }
+  
+  .table-cell {
+    padding: $spacing-sm;
+    font-size: $font-size-sm;
+  }
+}
+
+@include tablet {
+  .table-responsive {
+    overflow: visible;
+    
+    table {
+      min-width: auto;
+    }
+  }
+  
+  .table-cell {
+    padding: $spacing-md;
+    font-size: $font-size-base;
+  }
+}
+
+// ===== RESPONSIVE APP COMPONENT =====
+@include mobile {
+  // Header responsive
+  .canva-header {
+    .header-container {
+      padding: 0 $spacing-md;
+    }
+    
+    .header-nav {
+      display: none; // Ẩn navigation trên mobile
+    }
+    
+    .header-actions {
+      gap: $spacing-sm;
+      
+      .login-btn,
+      .signup-btn {
+        padding: $spacing-xs $spacing-sm;
+        font-size: $font-size-sm;
+        
+        span {
+          display: none; // Ẩn text, chỉ hiện icon
+        }
+      }
+      
+      .user-menu-trigger {
+        padding: $spacing-xs;
+        
+        .username {
+          display: none; // Ẩn username trên mobile
+        }
+        
+        .user-avatar {
+          width: 28px;
+          height: 28px;
+          
+          .avatar-icon {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+  
+  // Main content responsive
+  .main-content {
+    margin-top: 60px; // Giảm margin-top cho mobile
+    padding: $spacing-md 0;
+  }
+  
+  // Scroll to top button responsive
+  .scroll-to-top {
+    bottom: $spacing-md;
+    right: $spacing-md;
+    width: 45px;
+    height: 45px;
+  }
+  
+  // Global loading overlay responsive
+  .global-loading-overlay {
+    .spinner-container {
+      padding: $spacing-lg;
+      margin: $spacing-md;
+      max-width: 90%;
+    }
+  }
+  
+  // Footer responsive
+  .footer {
+    padding: $spacing-lg 0;
+    
+    .footer-content {
+      padding: 0 $spacing-md;
+    }
+  }
+}
+
+@include tablet {
+  // Header responsive
+  .canva-header {
+    .header-container {
+      padding: 0 $spacing-lg;
+    }
+    
+    .header-nav {
+      display: flex; // Hiện navigation trên tablet
+    }
+    
+    .header-actions {
+      gap: $spacing-md;
+      
+      .login-btn,
+      .signup-btn {
+        padding: $spacing-sm $spacing-md;
+        font-size: $font-size-base;
+        
+        span {
+          display: inline; // Hiện text trên tablet
+        }
+      }
+      
+      .user-menu-trigger {
+        padding: $spacing-sm $spacing-md;
+        
+        .username {
+          display: inline; // Hiện username trên tablet
+        }
+        
+        .user-avatar {
+          width: 32px;
+          height: 32px;
+          
+          .avatar-icon {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+  
+  // Main content responsive
+  .main-content {
+    margin-top: 76px;
+    padding: $spacing-lg 0;
+  }
+  
+  // Scroll to top button responsive
+  .scroll-to-top {
+    bottom: $spacing-lg;
+    right: $spacing-lg;
+    width: 50px;
+    height: 50px;
+  }
+  
+  // Global loading overlay responsive
+  .global-loading-overlay {
+    .spinner-container {
+      padding: $spacing-xl;
+      margin: $spacing-lg;
+      max-width: 80%;
+    }
+  }
+  
+  // Footer responsive
+  .footer {
+    padding: $spacing-xl 0;
+    
+    .footer-content {
+      padding: 0 $spacing-lg;
+    }
+  }
+}
+
+@include desktop {
+  // Header responsive
+  .canva-header {
+    .header-container {
+      padding: 0 $spacing-2xl;
+    }
+    
+    .header-nav {
+      display: flex;
+    }
+    
+    .header-actions {
+      gap: $spacing-lg;
+      
+      .login-btn,
+      .signup-btn {
+        padding: $spacing-sm $spacing-lg;
+        font-size: $font-size-base;
+        
+        span {
+          display: inline;
+        }
+      }
+      
+      .user-menu-trigger {
+        padding: $spacing-sm $spacing-md;
+        
+        .username {
+          display: inline;
+        }
+        
+        .user-avatar {
+          width: 32px;
+          height: 32px;
+          
+          .avatar-icon {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+  
+  // Main content responsive
+  .main-content {
+    margin-top: 76px;
+    padding: $spacing-xl 0;
+  }
+  
+  // Scroll to top button responsive
+  .scroll-to-top {
+    bottom: $spacing-xl;
+    right: $spacing-xl;
+    width: 50px;
+    height: 50px;
+  }
+  
+  // Global loading overlay responsive
+  .global-loading-overlay {
+    .spinner-container {
+      padding: $spacing-2xl;
+      margin: $spacing-xl;
+      max-width: 70%;
+    }
+  }
+  
+  // Footer responsive
+  .footer {
+    padding: $spacing-xl 0;
+    
+    .footer-content {
+      padding: 0 $spacing-2xl;
+    }
+  }
+} 

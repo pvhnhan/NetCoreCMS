@@ -1,0 +1,25 @@
+<div *ngIf="isOpen" class="app-modal-overlay" (click)="close.emit()">
+  <div class="app-modal-container" (click)="$event.stopPropagation()">
+    <div class="app-modal-header">
+      <div class="app-modal-header-content">
+        <div class="app-modal-header-text">
+          <h2>{{ title }}</h2>
+          <p *ngIf="subtitle">{{ subtitle }}</p>
+        </div>
+        <button class="app-modal-close-btn" (click)="close.emit()" aria-label="Đóng">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="app-modal-content">
+      <ng-content></ng-content>
+    </div>
+    <div class="app-modal-actions">
+      <button type="button" class="btn btn-secondary" (click)="close.emit()">{{ cancelText }}</button>
+      <button type="button" class="btn btn-primary" [disabled]="isSubmitting" (click)="submit.emit()">
+        <app-custom-spinner *ngIf="isSubmitting" size="small"></app-custom-spinner>
+        <span *ngIf="!isSubmitting">{{ submitText }}</span>
+      </button>
+    </div>
+  </div>
+</div> 

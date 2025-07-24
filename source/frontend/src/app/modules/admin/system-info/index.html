@@ -1,0 +1,239 @@
+<!-- System Info Overview -->
+<div class="system-info__overview">
+  <div class="system-info__header">
+    <div class="system-info__header-content">
+      <mat-icon class="system-info__header-icon">info</mat-icon>
+      <div class="system-info__header-text">
+        <h1>Thông tin hệ thống</h1>        
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid 2 block: Thông tin hệ thống & Cấu hình chung -->
+  <div class="system-info__grid-2">
+    <!-- Block 1: Thông tin hệ thống -->
+    <div class="system-info__card">
+      <div class="system-info__card-header">
+        <mat-icon class="system-info__card-icon">info</mat-icon>
+        <h3 class="system-info__card-title">Thông tin hệ thống</h3>
+        <!-- Nút mở modal -->
+        <button mat-icon-button class="edit-icon-btn" (click)="openBasicInfoModal()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <div class="system-info__card-content">
+        <div class="system-info__field"><span class="system-info__field-label">Tên website:</span> <span class="system-info__field-value">{{ basicInfo.siteName }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Mô tả:</span> <span class="system-info__field-value">{{ basicInfo.description }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Logo:</span> <span class="system-info__field-value">{{ basicInfo.logo }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Favicon:</span> <span class="system-info__field-value">{{ basicInfo.favicon }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Email liên hệ:</span> <span class="system-info__field-value">{{ basicInfo.contactEmail }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Số điện thoại:</span> <span class="system-info__field-value">{{ basicInfo.contactPhone }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Địa chỉ:</span> <span class="system-info__field-value">{{ basicInfo.address }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Mạng xã hội:</span> <span class="system-info__field-value">{{ basicInfo.socialLinks }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Meta Keywords:</span> <span class="system-info__field-value">{{ basicInfo.metaKeywords }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Meta Description:</span> <span class="system-info__field-value">{{ basicInfo.metaDescription }}</span></div>
+      </div>
+    </div>
+    <!-- Block 2: Cấu hình chung -->
+    <div class="system-info__card">
+      <div class="system-info__card-header">
+        <mat-icon class="system-info__card-icon">settings</mat-icon>
+        <h3 class="system-info__card-title">Cấu hình chung</h3>
+        <button mat-icon-button class="edit-icon-btn" (click)="editSystemConfig()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <div class="system-info__card-content">
+        <div class="system-info__field"><span class="system-info__field-label">Facebook App ID:</span> <span class="system-info__field-value">{{ systemConfig.facebookAppId || 'Chưa cấu hình' }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Google Analytics ID:</span> <span class="systemInfo__field-value">{{ systemConfig.googleAnalyticsId || 'Chưa cấu hình' }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Google Maps API Key:</span> <span class="system-info__field-value">{{ systemConfig.googleMapsApiKey || 'Chưa cấu hình' }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">SMTP Server:</span> <span class="system-info__field-value">{{ systemConfig.smtpServer || 'Chưa cấu hình' }}</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Thông tin hệ thống (dữ liệu bên trái, button nghiệp vụ bên phải) -->
+  <div class="system-info__card system-info__card--info-action">
+    <div class="system-info__card-header">
+      <mat-icon class="system-info__card-icon">storage</mat-icon>
+      <h3 class="system-info__card-title">Hạ tầng dữ liệu</h3>
+    </div>
+    <div class="system-info__card-content system-info__info-action-content">
+      <div class="system-info__info-col">
+        <div class="system-info__field"><span class="system-info__field-label">Loại DB:</span> <span class="system-info__field-value">{{ databaseInfo.dbType }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Phiên bản DB:</span> <span class="system-info__field-value">{{ databaseInfo.version }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Số lượng bảng ghi:</span> <span class="system-info__field-value">{{ databaseInfo.tableCount }}</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Công nghệ:</span> <span class="system-info__field-value">Angular 17, .NET 8, PostgreSQL</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Version deploy:</span> <span class="system-info__field-value">v1.0.0</span></div>
+        <div class="system-info__field"><span class="system-info__field-label">Môi trường triển khai:</span> <span class="system-info__field-value">Production</span></div>
+      </div>
+      <div class="system-info__action-col">
+        <div class="system-info__action-buttons system-info__action-buttons--vertical">
+          <button mat-stroked-button class="action-btn"><mat-icon>backup</mat-icon> Sao lưu dữ liệu</button>
+          <button mat-stroked-button class="action-btn"><mat-icon>restore</mat-icon> Khôi phục dữ liệu</button>
+          <button mat-stroked-button class="action-btn" (click)="onClearCacheClick()">
+            <mat-icon>clear_all</mat-icon> Xóa cache
+          </button>
+          <button mat-stroked-button class="action-btn"><mat-icon>refresh</mat-icon> Làm mới hệ thống</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Basic Info Modal -->
+<app-modal
+  [isOpen]="showBasicInfoModal"
+  [title]="'CHỈNH SỬA THÔNG TIN HỆ THỐNG'"
+  [subtitle]="'Cập nhật thông tin cơ bản của website'"
+  [isSubmitting]="isSubmitting"
+  [submitText]="'Lưu thông tin'"
+  [cancelText]="'Hủy'"
+  (close)="closeBasicInfoModal()"
+  (submit)="saveBasicInfo()"
+>
+  <form [formGroup]="basicInfoForm" class="app-modal-form" (ngSubmit)="saveBasicInfo()">
+    <!-- Các trường form như cũ -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Tên website *</mat-label>
+      <input matInput formControlName="siteName" placeholder="Nhập tên website">
+      <mat-error *ngIf="isFieldInvalid(basicInfoForm, 'siteName')">{{ getFieldError(basicInfoForm, 'siteName') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Mô tả *</mat-label>
+      <textarea matInput formControlName="description" rows="2" placeholder="Nhập mô tả"></textarea>
+      <mat-error *ngIf="isFieldInvalid(basicInfoForm, 'description')">{{ getFieldError(basicInfoForm, 'description') }}</mat-error>
+    </mat-form-field>
+    <div class="logo-favicon-row">
+      <div class="logo-upload">
+        <app-image-upload
+          label="Logo"
+          [required]="false"
+          placeholder="Chọn logo cho website"
+          helpText="Hỗ trợ: JPG, PNG, SVG (Tối đa 2MB)"
+          [imagePreview]="logoPreviewUrl || ''"
+          (fileSelected)="onLogoFileSelected($event)"
+          (imageRemoved)="removeLogo()">
+        </app-image-upload>
+      </div>
+      <div class="favicon-upload">
+        <app-image-upload
+          label="Favicon"
+          [required]="false"
+          placeholder="Chọn favicon cho website"
+          helpText="Hỗ trợ: ICO, PNG (Tối đa 1MB)"
+          [imagePreview]="faviconPreviewUrl || ''"
+          (fileSelected)="onFaviconFileSelected($event)"
+          (imageRemoved)="removeFavicon()">
+        </app-image-upload>
+      </div>
+    </div>
+    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+      <mat-form-field appearance="outline" style="flex:1;">
+        <mat-label>Email liên hệ</mat-label>
+        <input matInput type="email" formControlName="contactEmail" placeholder="Nhập email">
+        <mat-error *ngIf="isFieldInvalid(basicInfoForm, 'contactEmail')">{{ getFieldError(basicInfoForm, 'contactEmail') }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="flex:1;">
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput formControlName="contactPhone" placeholder="Nhập số điện thoại">
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="flex:1;">
+        <mat-label>Zalo</mat-label>
+        <input matInput formControlName="zalo" placeholder="Zalo">
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+      <mat-form-field appearance="outline" style="flex:1;">
+        <mat-label>Facebook</mat-label>
+        <input matInput formControlName="facebook" placeholder="Facebook">
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="flex:1;">
+        <mat-label>Youtube</mat-label>
+        <input matInput formControlName="youtube" placeholder="Youtube">
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Địa chỉ</mat-label>
+      <input matInput formControlName="address" placeholder="Nhập địa chỉ">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Meta Keywords</mat-label>
+      <input matInput formControlName="metaKeywords" placeholder="Nhập meta keywords">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Meta Description</mat-label>
+      <textarea matInput formControlName="metaDescription" rows="2" placeholder="Nhập meta description"></textarea>
+    </mat-form-field>
+  </form>
+</app-modal>
+
+<!-- Edit Contact Info Modal -->
+<app-modal
+  [isOpen]="showContactInfoModal"
+  [title]="'CHỈNH SỬA THÔNG TIN LIÊN HỆ'"
+  [subtitle]="'Cập nhật thông tin liên hệ của website'"
+  [isSubmitting]="isSubmitting"
+  [submitText]="'Lưu thông tin'"
+  [cancelText]="'Hủy'"
+  (close)="closeContactInfoModal()"
+  (submit)="saveContactInfo()"
+>
+  <form [formGroup]="contactInfoForm" class="app-modal-form" (ngSubmit)="saveContactInfo()">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Email *</mat-label>
+      <input matInput type="email" formControlName="email" placeholder="Nhập email">
+      <mat-error *ngIf="isFieldInvalid(contactInfoForm, 'email')">{{ getFieldError(contactInfoForm, 'email') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Điện thoại *</mat-label>
+      <input matInput type="tel" formControlName="phone" placeholder="Nhập số điện thoại">
+      <mat-error *ngIf="isFieldInvalid(contactInfoForm, 'phone')">{{ getFieldError(contactInfoForm, 'phone') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Địa chỉ *</mat-label>
+      <textarea matInput formControlName="address" rows="2" placeholder="Nhập địa chỉ"></textarea>
+      <mat-error *ngIf="isFieldInvalid(contactInfoForm, 'address')">{{ getFieldError(contactInfoForm, 'address') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Website</mat-label>
+      <input matInput type="url" formControlName="website" placeholder="Nhập website">
+      <mat-error *ngIf="isFieldInvalid(contactInfoForm, 'website')">{{ getFieldError(contactInfoForm, 'website') }}</mat-error>
+    </mat-form-field>
+  </form>
+</app-modal>
+
+<!-- Edit System Config Modal -->
+<app-modal
+  [isOpen]="showSystemConfigModal"
+  [title]="'CHỈNH SỬA CẤU HÌNH CHUNG'"
+  [subtitle]="'Cập nhật cấu hình hệ thống và tích hợp'"
+  [isSubmitting]="isSubmitting"
+  [submitText]="'Lưu cấu hình'"
+  [cancelText]="'Hủy'"
+  (close)="closeSystemConfigModal()"
+  (submit)="saveSystemConfig()"
+>
+  <form [formGroup]="systemConfigForm" class="app-modal-form" (ngSubmit)="saveSystemConfig()">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Facebook App ID</mat-label>
+      <input matInput formControlName="facebookAppId" placeholder="Nhập Facebook App ID (chỉ số)">
+      <mat-error *ngIf="isFieldInvalid(systemConfigForm, 'facebookAppId')">{{ getFieldError(systemConfigForm, 'facebookAppId') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Google Analytics ID</mat-label>
+      <input matInput formControlName="googleAnalyticsId" placeholder="Nhập Google Analytics ID (G-XXXXXXXXXX)">
+      <mat-error *ngIf="isFieldInvalid(systemConfigForm, 'googleAnalyticsId')">{{ getFieldError(systemConfigForm, 'googleAnalyticsId') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Google Maps API Key</mat-label>
+      <input matInput formControlName="googleMapsApiKey" placeholder="Nhập Google Maps API Key">
+      <mat-error *ngIf="isFieldInvalid(systemConfigForm, 'googleMapsApiKey')">{{ getFieldError(systemConfigForm, 'googleMapsApiKey') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>SMTP Server</mat-label>
+      <input matInput formControlName="smtpServer" placeholder="Nhập SMTP Server (vd: smtp.gmail.com)">
+      <mat-error *ngIf="isFieldInvalid(systemConfigForm, 'smtpServer')">{{ getFieldError(systemConfigForm, 'smtpServer') }}</mat-error>
+    </mat-form-field>
+  </form>
+</app-modal> 

@@ -1,0 +1,129 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <mat-icon>person</mat-icon>
+    </div>
+    <h1 class="profile-name">{{ currentUser?.fullName || currentUser?.username }}</h1>
+    <p class="profile-role">{{ getRoleDisplayName(currentUser?.role) }}</p>
+  </div>
+
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>edit</mat-icon>
+        Cập nhật thông tin cá nhân
+      </mat-card-title>
+      <mat-card-subtitle>
+        Thay đổi thông tin cá nhân của bạn
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Họ và tên</mat-label>
+            <input matInput formControlName="fullName" placeholder="Nhập họ và tên">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="profileForm.get('fullName')?.hasError('required')">
+              Họ và tên là bắt buộc
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Nhập email">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+              Email là bắt buộc
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+              Email không hợp lệ
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Số điện thoại</mat-label>
+            <input matInput formControlName="phone" placeholder="Nhập số điện thoại">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="profileForm.get('phone')?.hasError('required')">
+              Số điện thoại là bắt buộc
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Địa chỉ</mat-label>
+            <input matInput formControlName="address" placeholder="Nhập địa chỉ">
+            <mat-icon matSuffix>location_on</mat-icon>
+            <mat-error *ngIf="profileForm.get('address')?.hasError('required')">
+              Địa chỉ là bắt buộc
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit" 
+            class="submit-button"
+            [disabled]="profileForm.invalid || isLoading">
+            <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+            <span *ngIf="!isLoading">Cập nhật thông tin</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>info</mat-icon>
+        Thông tin tài khoản
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">
+            <mat-icon>account_circle</mat-icon>
+            Tên đăng nhập
+          </div>
+          <div class="info-value">{{ currentUser?.username }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <mat-icon>security</mat-icon>
+            Vai trò
+          </div>
+          <div class="info-value">{{ getRoleDisplayName(currentUser?.role) }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <mat-icon>schedule</mat-icon>
+            Ngày tạo
+          </div>
+          <div class="info-value">{{ currentUser?.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <mat-icon>update</mat-icon>
+            Cập nhật lần cuối
+          </div>
+          <div class="info-value">{{ currentUser?.updatedAt | date:'dd/MM/yyyy HH:mm' }}</div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div> 
