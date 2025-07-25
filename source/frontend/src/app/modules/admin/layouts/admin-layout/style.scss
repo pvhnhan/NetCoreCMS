@@ -15,10 +15,13 @@
   display: flex;
   flex-direction: column;
   box-shadow: $shadow-md;
-  z-index: 10;
+  z-index: 100;
   min-height: 100vh;
-  position: relative;
-  padding: 1.25rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  padding-top: 96px; // nếu header cao 98px, điều chỉnh nếu header khác
 }
 
 .sidebar-header {
@@ -155,6 +158,11 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.admin-content {
+  margin-left: 320px;
+  transition: margin-left 0.2s;
 }
 
 @media (max-width: $breakpoint-md) {

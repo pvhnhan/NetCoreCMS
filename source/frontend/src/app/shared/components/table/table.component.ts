@@ -114,9 +114,9 @@ export interface TableColumn {
       font-weight: 600 !important;
     }
     .table-col-stt {
-      width: 60px;
-      min-width: 60px;
-      max-width: 60px;
+      width: 65px;
+      min-width: 65px;
+      max-width: 65px;
       text-align: center;
       position: sticky;
       left: 0;
@@ -135,9 +135,9 @@ export interface TableColumn {
       border-right: 1px solid #e0e0e0;
     }
     .table-col-actions {
-      width: 192px;
-      min-width: 192px;
-      max-width: 192px;
+      width: 160px;
+      min-width: 160px;
+      max-width: 160px;
       text-align: center;
       padding: 0;
       white-space: nowrap;

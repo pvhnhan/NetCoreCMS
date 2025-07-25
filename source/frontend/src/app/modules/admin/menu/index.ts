@@ -58,7 +58,7 @@ export class MenuComponent implements OnInit {
   menuForm: FormGroup;
   tableColumns = [
     { label: 'Tên menu', field: 'name', width: '20%' },
-    { label: 'URL', field: 'url', width: '14%' },
+    { label: 'URL', field: 'url', width: '15%' },
     { label: 'Menu cha', field: 'parentName', width: '20%' },
     { label: 'Thứ tự', field: 'displayOrder', width: '10%'},
     { label: 'Vị trí', field: 'position', width: '10%' },

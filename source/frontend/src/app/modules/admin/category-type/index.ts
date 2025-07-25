@@ -55,7 +55,7 @@ export class CategoryTypeComponent implements OnInit {
   isSubmitting = false;
   categoryForm: FormGroup;
   tableColumns = [    
-    { label: 'Tên loại danh mục', field: 'name', width: '24%' },
+    { label: 'Tên loại danh mục', field: 'name', width: '25%' },
     { label: 'Mô tả', field: 'description', width: '50%' },
     { label: 'Trạng thái', field: 'isActive', width: '12%' }    
   ];
