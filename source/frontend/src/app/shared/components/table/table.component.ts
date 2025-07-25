@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, AfterViewInit, OnDestroy, NgZone, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { IconEditButtonComponent } from '../buttons/icon-edit-button.component';
@@ -17,14 +17,16 @@ export interface TableColumn {
   standalone: true,
   imports: [CommonModule, MatIconModule, IconEditButtonComponent, IconDeleteButtonComponent],
   template: `
-    <div class="table-wrapper">
+    <div class="table-wrapper" #tableWrapper>
       <table class="admin-table">
         <thead>
           <tr>
             <th class="table-col-stt">#</th>
             <th *ngFor="let col of columns; let i = index"
-                [style.width]="col.width"
-                [ngClass]="col.headerClass ? col.headerClass : getDefaultHeaderClass(i)">
+                [ngClass]="getStickyClass(i) + ' table-content-col ' + (col.headerClass ? col.headerClass : getDefaultHeaderClass(i))"
+                [style.width]="i === columns.length - 1 ? '204px' : col.width"
+                [style.minWidth]="i === columns.length - 1 ? '204px' : col.width"
+                [style.maxWidth]="i === columns.length - 1 ? '204px' : col.width">
               {{ col.label }}
             </th>
             <th class="table-col-actions">Thao tác</th>
@@ -33,16 +35,25 @@ export interface TableColumn {
         <tbody>
           <tr *ngFor="let row of data; let i = index">
             <td class="table-col-stt">{{ i + 1 }}</td>
-            <td *ngFor="let col of columns">
-              <ng-container *ngIf="col.field === 'isActive'; else normalCell">
-                <span class="status-chip" [ngClass]="row.isActive ? 'active' : 'inactive'">
-                  <mat-icon>{{ row.isActive ? 'check_circle' : 'cancel' }}</mat-icon>
-                  {{ row.isActive ? 'Hoạt động' : 'Không hoạt động' }}
+            <td *ngFor="let col of columns; let i = index"
+                [ngClass]="getStickyClass(i) + ' table-content-col'"
+                [style.width]="i === columns.length - 1 ? '204px' : col.width"
+                [style.minWidth]="i === columns.length - 1 ? '204px' : col.width"
+                [style.maxWidth]="i === columns.length - 1 ? '204px' : col.width">
+              <ng-container [ngSwitch]="getCellType(row[col.field], col.field)">
+                <!-- Boolean: canh giữa, icon -->
+                <span *ngSwitchCase="'bool'" class="d-flex justify-content-center align-items-center">
+                  <mat-icon [ngClass]="row[col.field] ? 'text-success' : 'text-danger'">
+                    {{ row[col.field] ? 'check_circle' : 'cancel' }}
+                  </mat-icon>
                 </span>
+                <!-- Số: canh giữa -->
+                <span *ngSwitchCase="'number'" class="d-flex justify-content-center">{{ row[col.field] }}</span>
+                <!-- Tiền tệ: canh phải, định dạng -->
+                <span *ngSwitchCase="'currency'" class="d-flex justify-content-end">{{ row[col.field] | number:'1.0-0' }} ₫</span>
+                <!-- Chuỗi: canh trái -->
+                <span *ngSwitchDefault class="d-flex justify-content-start">{{ row[col.field] }}</span>
               </ng-container>
-              <ng-template #normalCell>
-                {{ row[col.field] }}
-              </ng-template>
             </td>
             <td class="table-col-actions">
               <app-icon-edit-button (click)="edit.emit(row)" ariaLabel="Sửa"></app-icon-edit-button>
@@ -59,6 +70,7 @@ export interface TableColumn {
       background: $white;
       border-radius: $border-radius-lg;
       box-shadow: $shadow-md;
+      overflow-x: auto;
     }
     .admin-table {
       width: 100%;
@@ -102,11 +114,30 @@ export interface TableColumn {
       font-weight: 600 !important;
     }
     .table-col-stt {
-      width: 5%;
+      width: 60px;
+      min-width: 60px;
+      max-width: 60px;
       text-align: center;
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      background: #f5f5f5;
+      border-right: 1px solid #e0e0e0;
+    }
+    .fixed-col-2 {
+      width: 400px;
+      min-width: 400px;
+      max-width: 400px;
+      position: sticky;
+      left: 60px;
+      z-index: 2;
+      background: #fff;
+      border-right: 1px solid #e0e0e0;
     }
     .table-col-actions {
-      width: 100%;
+      width: 192px;
+      min-width: 192px;
+      max-width: 192px;
       text-align: center;
       padding: 0;
       white-space: nowrap;
@@ -114,6 +145,11 @@ export interface TableColumn {
       justify-content: center;
       align-items: center;
       gap: 0.6rem;
+      position: sticky;
+      right: 0;
+      z-index: 3;
+      background: #f5f5f5;
+      border-left: 1px solid #e0e0e0;
     }
     .admin-table td:last-child, .admin-table th:last-child {
       padding-right: 0 !important;
@@ -167,23 +203,93 @@ export interface TableColumn {
     :host ::ng-deep th:last-child {
       border-right: none !important;
     }
+    .sticky-col-1 {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      background: #f5f5f5 !important;
+    }
+    .sticky-col-2 {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: #fff;
+    }
+    .sticky-col-last {
+      position: sticky;
+      right: 0;
+      z-index: 3;
+      background: #f5f5f5 !important;
+      width: 204px !important;
+      min-width: 204px !important;
+      max-width: 204px !important;
+    }
+    .table-content-col {
+      background: #fff !important;
+    }
   `]
 })
-export class TableComponent {
+export class TableComponent implements AfterViewInit, OnDestroy {
   @Input() columns: TableColumn[] = [];
   @Input() data: any[] = [];
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
 
+  @ViewChild('tableWrapper', { static: false }) tableWrapperRef!: ElementRef;
+  tableWidth = 0;
+  resizeObserver: ResizeObserver | null = null;
+  contentColWidths: string[] = [];
+  showFiller = false;
+
+  constructor(private ngZone: NgZone) {}
+
+  ngAfterViewInit() {
+    this.updateTableWidthAndContentCols();
+    this.resizeObserver = new ResizeObserver(() => {
+      this.ngZone.run(() => this.updateTableWidthAndContentCols());
+    });
+    const wrapper = document.querySelector('.table-wrapper') as HTMLElement;
+    if (wrapper && this.resizeObserver) {
+      this.resizeObserver.observe(wrapper);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  updateTableWidthAndContentCols() {
+    const wrapper = document.querySelector('.table-wrapper') as HTMLElement;
+    if (wrapper) {
+      this.tableWidth = wrapper.offsetWidth;
+      // Tính tổng width các cột (sticky + nội dung)
+      const stickyPx = 60 + 160;
+      const contentColCount = this.columns.length - 2;
+      const remain = this.tableWidth - stickyPx;
+      // Giả sử mỗi cột nội dung tối thiểu 120px
+      const totalContentPx = contentColCount * 120;
+      // Nếu tổng sticky + nội dung < tableWidth, cần filler
+      this.showFiller = (stickyPx + totalContentPx < this.tableWidth);
+      this.contentColWidths = Array(contentColCount).fill('');
+    }
+  }
+
   getDefaultHeaderClass(index: number): string {
     return `header-variant-${index % 5}`;
   }
 
-  getColWidth(idx: number) {
-    if (this.columns.length === 3) {
-      // Tên 25%, Mô tả 45%, Trạng thái 15%
-      return ["25%", "45%", "15%"][idx];
-    }
+  getStickyClass(idx: number): string {
+    if (idx === 0) return 'sticky-col-1';
+    if (idx === this.columns.length - 1) return 'sticky-col-last';
     return '';
+  }
+
+  getCellType(value: any, field: string): 'bool' | 'number' | 'currency' | 'string' {
+    if (typeof value === 'boolean' || field.startsWith('is') || field.startsWith('has')) return 'bool';
+    if (typeof value === 'number' && (field.toLowerCase().includes('price') || field.toLowerCase().includes('amount') || field.toLowerCase().includes('total'))) return 'currency';
+    if (typeof value === 'number') return 'number';
+    return 'string';
   }
 } 

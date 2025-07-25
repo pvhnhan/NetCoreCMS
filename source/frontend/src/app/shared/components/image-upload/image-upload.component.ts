@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -8,160 +9,174 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [CommonModule, MatIconModule, MatButtonModule],
   template: `
-    <div class="image-upload-field">
-      <div class="file-upload-area" 
-           (click)="fileInput.click()" 
-           (dragover)="onDragOver($event)" 
+    <div class="image-upload-container">
+      <label class="upload-label" *ngIf="label">
+        {{ label }} <span class="required-asterisk" *ngIf="required">*</span>
+      </label>
+      
+      <div class="upload-area"
+           [class.drag-over]="isDragOver"
+           (click)="fileInput.click()"
+           (dragover)="onDragOver($event)"
            (dragleave)="onDragLeave($event)"
-           (drop)="onDrop($event)"
-           [class.drag-over]="isDragOver">
-        <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-        <mat-icon>cloud_upload</mat-icon>
-        <div class="file-upload-label-inline">
-          {{ label }} <span class="required-asterisk" *ngIf="required">*</span>
+           (drop)="onDrop($event)">
+        
+        <input #fileInput 
+               type="file" 
+               (change)="onFileSelected($event)" 
+               accept="image/*" 
+               style="display: none;">
+        
+        <div class="upload-content" *ngIf="!getPreviewUrl()">
+          <mat-icon class="upload-icon">cloud_upload</mat-icon>
+          <p class="upload-text">{{ placeholder || 'Kéo thả hoặc click để chọn hình ảnh' }}</p>
+          <small class="upload-hint">{{ hint || 'Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)' }}</small>
         </div>
-        <p>{{ placeholder || 'Kéo thả hoặc click để chọn hình ảnh' }}</p>
-        <small>{{ helpText || 'Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)' }}</small>
+        
+        <div class="image-preview" *ngIf="getPreviewUrl()">
+          <img [src]="getPreviewUrl()" [alt]="fileName" class="preview-image">
+          <div class="preview-overlay">
+            <button mat-icon-button color="warn" (click)="removeImage()" class="remove-btn" aria-label="Xóa ảnh">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="image-preview" *ngIf="imagePreview">
-        <img [src]="imagePreview" alt="Preview" class="preview-img">
-        <button mat-icon-button color="warn" (click)="removeImage()" type="button" class="remove-btn" aria-label="Xóa ảnh">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
+      
       <div class="error-message" *ngIf="errorMessage">
         {{ errorMessage }}
       </div>
     </div>
   `,
-  styles: [`
-    .image-upload-field {
-      margin-bottom: 0;
+  styleUrls: ['./image-upload.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ImageUploadComponent),
+      multi: true
     }
-    .file-upload-area {
-      border: 1.5px dashed #c9a074;
-      border-radius: 10px;
-      padding: 1.5rem 1rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: #fcf9f6;
-      min-width: 220px;
-      min-height: 110px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .file-upload-area:hover, .file-upload-area.drag-over {
-      border-color: #8B4513;
-      background: #f5ede6;
-    }
-    .file-upload-label-inline {
-      font-weight: 600;
-      color: #8B4513;
-      font-size: 1rem;
-      margin-bottom: 0.25rem;
-    }
-    .required-asterisk {
-      color: #d32f2f;
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-    .file-upload-area mat-icon {
-      font-size: 2rem;
-      width: 2rem;
-      height: 2rem;
-      color: #8B4513;
-      margin-bottom: 0.25rem;
-    }
-    .file-upload-area p {
-      font-size: 1rem;
-      color: #222;
-      margin: 0 0 0.15rem 0;
-      font-weight: 600;
-    }
-    .file-upload-area small {
-      color: #888;
-      font-size: 0.92rem;
-    }
-    .image-preview {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-      padding: 0.25rem 0.5rem;
-      background: #fcf9f6;
-      border-radius: 8px;
-    }
-    .preview-img {
-      max-width: 60px;
-      max-height: 48px;
-      border-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-      object-fit: cover;
-      border: 1px solid #e0c9b3;
-    }
-    .remove-btn {
-      background: #fbeaea;
-      color: #d32f2f;
-      width: 28px;
-      height: 28px;
-      min-width: 28px;
-      min-height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.18s;
-    }
-    .remove-btn:hover {
-      background: #d32f2f;
-      color: #fff;
-    }
-    .error-message {
-      color: #d32f2f;
-      font-size: 0.92rem;
-      margin-top: 0.25rem;
-    }
-  `]
+  ]
 })
-export class ImageUploadComponent {
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+export class ImageUploadComponent implements ControlValueAccessor {
   @Input() label: string = '';
-  @Input() required: boolean = false;
   @Input() placeholder: string = '';
-  @Input() helpText: string = '';
-  @Input() errorMessage: string = '';
-  @Input() imagePreview: string | null = '';
+  @Input() hint: string = '';
+  @Input() required: boolean = false;
+  @Input() maxSize: number = 5; // MB
+  @Input() acceptedTypes: string[] = ['image/jpeg', 'image/png', 'image/gif'];
+  @Input() imagePreview: string | null = null; // For external preview URL
+  
   @Output() fileSelected = new EventEmitter<File>();
-  @Output() imageRemoved = new EventEmitter<void>();
+  @Output() fileRemoved = new EventEmitter<void>();
+  @Output() imageRemoved = new EventEmitter<void>(); // For backward compatibility
+  @Output() error = new EventEmitter<string>();
+
+  internalPreview: string | ArrayBuffer | null = null;
+  fileName: string = '';
   isDragOver = false;
-  onDragOver(event: DragEvent) { event.preventDefault(); this.isDragOver = true; }
-  onDragLeave(event: DragEvent) { event.preventDefault(); this.isDragOver = false; }
-  onDrop(event: DragEvent) {
+  errorMessage: string = '';
+  
+  private onChange = (value: any) => {};
+  private onTouched = () => {};
+
+  onDragOver(event: DragEvent): void {
     event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
     this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+    
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
-      const file = files[0];
-      if (file.type.startsWith('image/')) {
-        this.fileSelected.emit(file);
-      }
+      this.processFile(files[0]);
     }
   }
-  onFileSelected(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const files = target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.processFile(file);
+    }
+  }
+
+  private processFile(file: File): void {
+    this.errorMessage = '';
+    
+    // Validate file type
+    if (!this.acceptedTypes.includes(file.type)) {
+      this.errorMessage = 'Loại file không được hỗ trợ';
+      this.error.emit(this.errorMessage);
+      return;
+    }
+    
+    // Validate file size
+    if (file.size > this.maxSize * 1024 * 1024) {
+      this.errorMessage = `File quá lớn. Tối đa ${this.maxSize}MB`;
+      this.error.emit(this.errorMessage);
+      return;
+    }
+    
+    // Process file
+    this.fileName = file.name;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.internalPreview = e.target?.result || null;
+      this.onChange(file);
+      this.onTouched();
       this.fileSelected.emit(file);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeImage(): void {
+    this.internalPreview = null;
+    this.fileName = '';
+    this.onChange(null);
+    this.onTouched();
+    this.fileRemoved.emit();
+    this.imageRemoved.emit();
+  }
+
+  getPreviewUrl(): string | null {
+    // Use external preview if provided, otherwise use internal preview
+    if (this.imagePreview) {
+      return this.imagePreview;
+    }
+    if (this.internalPreview && typeof this.internalPreview === 'string') {
+      return this.internalPreview;
+    }
+    return null;
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: any): void {
+    if (value instanceof File) {
+      this.processFile(value);
+    } else if (typeof value === 'string') {
+      this.imagePreview = value;
+      this.fileName = 'Image';
     }
   }
-  removeImage() {
-    this.imageRemoved.emit();
-    if (this.fileInput) {
-      this.fileInput.nativeElement.value = '';
-    }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    // Handle disabled state if needed
   }
 } 

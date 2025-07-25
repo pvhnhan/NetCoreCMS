@@ -13,6 +13,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { IconAddButtonComponent } from '../../../shared/components/buttons/icon-add-button.component';
 import { CustomSpinnerComponent } from '../../../shared/components/custom-spinner/custom-spinner.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { ImageUploadComponent } from '../../../shared/components/image-upload/image-upload.component';
 
 @Component({
   selector: 'app-banner',
@@ -31,7 +33,9 @@ import { CustomSpinnerComponent } from '../../../shared/components/custom-spinne
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     IconAddButtonComponent,
-    CustomSpinnerComponent
+    CustomSpinnerComponent,
+    ModalComponent,
+    ImageUploadComponent
   ],
   styleUrls: ['./style.scss'],
   templateUrl: './index.html',
@@ -48,6 +52,8 @@ export class BannerComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   isDragOver = false;
   placeholderImage = 'assets/images/placeholder.jpg';
+  selectedFileName: string = '';
+  uploadError: string = '';
 
   constructor(private fb: FormBuilder) {
     this.bannerForm = this.fb.group({
@@ -154,14 +160,17 @@ export class BannerComponent implements OnInit {
     event.target.src = this.placeholderImage;
   }
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.bannerForm.patchValue({ imageFile: file });
-      const reader = new FileReader();
-      reader.onload = e => this.imagePreview = reader.result;
-      reader.readAsDataURL(file);
-    }
+  onFileSelected(file: File): void {
+    this.bannerForm.patchValue({ imageFile: file });
+    const reader = new FileReader();
+    reader.onload = e => this.imagePreview = reader.result;
+    reader.readAsDataURL(file);
+    this.selectedFileName = file.name;
+  }
+
+  onUploadError(error: string): void {
+    this.uploadError = error;
+    setTimeout(() => { this.uploadError = ''; }, 3000);
   }
 
   onDrop(event: DragEvent): void {
@@ -169,10 +178,7 @@ export class BannerComponent implements OnInit {
     this.isDragOver = false;
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
       const file = event.dataTransfer.files[0];
-      this.bannerForm.patchValue({ imageFile: file });
-      const reader = new FileReader();
-      reader.onload = e => this.imagePreview = reader.result;
-      reader.readAsDataURL(file);
+      this.onFileSelected(file);
     }
   }
 
@@ -189,5 +195,6 @@ export class BannerComponent implements OnInit {
   removeImage(): void {
     this.bannerForm.patchValue({ imageFile: null });
     this.imagePreview = null;
+    this.selectedFileName = '';
   }
 } 

@@ -63,103 +63,84 @@
     </div>
   </ng-template>
 
-    <!-- Add/Edit Modal -->
-    <div *ngIf="showDialog" class="banner-modal-overlay" (click)="closeDialog()">
-      <div class="banner-modal-container" (click)="$event.stopPropagation()">
-
-        
-        <div class="banner-modal-header">
-          <div class="banner-modal-header-content">
-            <div class="banner-modal-header-text">
-              <h2>{{ isEditing ? 'SỬA BANNER' : 'THÊM BANNER' }}</h2>
-              <p>{{ isEditing ? 'Cập nhật thông tin banner' : 'Tạo banner mới cho website' }}</p>
-            </div>
-            <button class="banner-modal__close-btn" (click)="closeDialog()" aria-label="Đóng">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
+  <!-- Add/Edit Modal -->
+  <app-modal
+    [isOpen]="showDialog"
+    [title]="isEditing ? 'SỬA BANNER' : 'THÊM BANNER'"
+    [subtitle]="isEditing ? 'Cập nhật thông tin banner' : 'Tạo banner mới cho website'"
+    [isSubmitting]="isSubmitting"
+    [submitText]="isEditing ? 'Cập nhật' : 'Thêm banner'"
+    [cancelText]="'Hủy'"
+    (close)="closeDialog()"
+    (submit)="saveBanner()"
+  >
+    <form [formGroup]="bannerForm" (ngSubmit)="$event.preventDefault(); saveBanner();" class="modal-form">
+      <div class="form-field">
+        <app-image-upload
+          formControlName="imageFile"
+          label="Ảnh banner"
+          placeholder="Kéo thả hoặc click để chọn hình ảnh"
+          hint="Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)"
+          [required]="true"
+          [maxSize]="5"
+          (fileSelected)="onFileSelected($event)"
+          (fileRemoved)="removeImage()"
+          (error)="onUploadError($event)">
+        </app-image-upload>
+      </div>
+      
+      <div class="row g-3 mt-3">
+        <div class="col-md-8">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Tiêu đề banner</mat-label>
+            <input matInput formControlName="title" placeholder="Nhập tiêu đề banner">
+            <mat-error *ngIf="isFieldInvalid('title')">{{ getFieldError('title') }}</mat-error>
+          </mat-form-field>
         </div>
         
-        <div class="banner-modal-content">
-          
-          <form [formGroup]="bannerForm" (ngSubmit)="saveBanner()" class="banner-modal-form">
-                          <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Tiêu đề banner</mat-label>
-                <input matInput formControlName="title" placeholder="Nhập tiêu đề banner">
-                <mat-error *ngIf="isFieldInvalid('title')">{{ getFieldError('title') }}</mat-error>
-              </mat-form-field>
-              
-              <div class="form-row">
-                <mat-form-field appearance="outline" class="form-field">
-                  <mat-label>Thứ tự hiển thị</mat-label>
-                  <input matInput type="number" formControlName="order" min="1" placeholder="Nhập thứ tự">
-                  <mat-error *ngIf="isFieldInvalid('order')">{{ getFieldError('order') }}</mat-error>
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline" class="form-field">
-                  <mat-label>Vị trí hiển thị</mat-label>
-                  <mat-select formControlName="position">
-                    <mat-option value="top">Trên cùng</mat-option>
-                    <mat-option value="bottom">Dưới cùng</mat-option>
-                    <mat-option value="left">Bên trái</mat-option>
-                    <mat-option value="right">Bên phải</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="isFieldInvalid('position')">{{ getFieldError('position') }}</mat-error>
-                </mat-form-field>
-              </div>
-              
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Mô tả</mat-label>
-                <textarea matInput formControlName="description" placeholder="Nhập mô tả chi tiết về banner" rows="2"></textarea>
-              </mat-form-field>
-              
-              <div class="form-field">
-                <label class="file-upload-label">Ảnh banner <span class="required-asterisk">*</span></label>
-              <div class="file-upload-area" 
-                   (click)="fileInput.click()" 
-                   (dragover)="onDragOver($event)" 
-                   (dragleave)="onDragLeave($event)"
-                   (drop)="onDrop($event)"
-                   [class.drag-over]="isDragOver">
-                <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-                <mat-icon>cloud_upload</mat-icon>
-                <p>Kéo thả hoặc click để chọn hình ảnh</p>
-                <small>Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)</small>
-              </div>
-              <mat-error *ngIf="isFieldInvalid('imageFile')">{{ getFieldError('imageFile') }}</mat-error>
-              
-              <div class="image-preview" *ngIf="imagePreview">
-                <img [src]="imagePreview" alt="Preview" class="preview-img">
-                <button mat-icon-button color="warn" (click)="removeImage()" type="button" class="remove-btn" aria-label="Xóa ảnh">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-            </div>
-            
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Link liên kết</mat-label>
-              <input matInput type="url" formControlName="link" placeholder="https://example.com">
-            </mat-form-field>
-            
-            <div class="form-options">
-              <mat-checkbox formControlName="isPoster" class="option-checkbox">
-                Có phải là poster không
-              </mat-checkbox>
-              
-              <mat-slide-toggle formControlName="isActive" class="option-toggle">
-                {{ bannerForm.get('isActive')?.value ? 'Banner hoạt động' : 'Banner ẩn' }}
-              </mat-slide-toggle>
-            </div>
-            
-            <div class="form-actions">
-              <button type="button" class="btn btn-secondary" (click)="closeDialog()">Hủy</button>
-              <button type="submit" class="btn btn-primary" [disabled]="bannerForm.invalid || isSubmitting">
-                <app-custom-spinner *ngIf="isSubmitting" size="small"></app-custom-spinner>
-                <span *ngIf="!isSubmitting">{{ isEditing ? 'Cập nhật' : 'Thêm banner' }}</span>
-              </button>
-            </div>
-          </form>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Thứ tự hiển thị</mat-label>
+            <input matInput type="number" formControlName="order" min="1" placeholder="Nhập thứ tự">
+            <mat-error *ngIf="isFieldInvalid('order')">{{ getFieldError('order') }}</mat-error>
+          </mat-form-field>
         </div>
       </div>
-    </div>
+      
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Vị trí hiển thị</mat-label>
+            <mat-select formControlName="position">
+              <mat-option value="top">Trên cùng</mat-option>
+              <mat-option value="bottom">Dưới cùng</mat-option>
+              <mat-option value="left">Bên trái</mat-option>
+              <mat-option value="right">Bên phải</mat-option>
+            </mat-select>
+            <mat-error *ngIf="isFieldInvalid('position')">{{ getFieldError('position') }}</mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="col-md-3 d-flex align-items-center">
+          <mat-checkbox formControlName="isPoster" color="primary">Poster</mat-checkbox>
+        </div>
+        
+        <div class="col-md-3 d-flex align-items-center">
+          <mat-slide-toggle formControlName="isActive" color="primary">
+            Hoạt động
+          </mat-slide-toggle>
+        </div>
+      </div>
+      
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Link liên kết</mat-label>
+        <input matInput type="url" formControlName="link" placeholder="https://example.com">
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Mô tả</mat-label>
+        <textarea matInput formControlName="description" placeholder="Nhập mô tả chi tiết về banner" rows="2"></textarea>
+      </mat-form-field>
+    </form>
+  </app-modal>
 </div>

@@ -55,45 +55,72 @@
   </ng-template>
 
   <!-- Add/Edit Menu Modal -->
-  <div *ngIf="showDialog" class="menu__modal-overlay" (click)="closeDialog()">
-    <div class="menu__modal-dialog" (click)="$event.stopPropagation()">
-      <div class="menu__modal-header">
-        <h2 class="menu__modal-title text-uppercase">          
-          {{ isEditing ? 'Sửa menu' : 'Thêm menu mới' }}
-        </h2>
-        <button class="menu__modal-close" (click)="closeDialog()">
-          <mat-icon>close</mat-icon>
-        </button>
+  <app-modal
+    [isOpen]="showDialog"
+    [title]="isEditing ? 'Sửa menu' : 'Thêm menu mới'"
+    [isSubmitting]="isSubmitting"
+    [submitText]="isEditing ? 'Cập nhật' : 'Thêm menu'"
+    [cancelText]="'Hủy'"
+    (close)="closeDialog()"
+    (submit)="saveMenu()"
+  >
+    <form [formGroup]="menuForm" (ngSubmit)="$event.preventDefault(); saveMenu();" class="menu__form modal-form">
+      <div class="form-row form-row--3" style="display: flex; gap: 1rem;">
+        <mat-form-field appearance="outline" class="form-field" style="flex: 0 0 calc(33.333% - 0.667rem);">
+          <mat-label>Tên menu</mat-label>
+          <input matInput formControlName="name" placeholder="Nhập tên menu">
+          <mat-error *ngIf="isFieldInvalid(menuForm, 'name')">{{ getFieldError(menuForm, 'name') }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field" style="flex: 0 0 calc(33.333% - 0.667rem);">
+          <mat-label>Icon (Font Awesome)</mat-label>
+          <input matInput formControlName="icon" placeholder="fa-solid fa-house">
+          <mat-error *ngIf="isFieldInvalid(menuForm, 'icon')">{{ getFieldError(menuForm, 'icon') }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field" style="flex: 0 0 calc(33.333% - 0.667rem);">
+          <mat-label>URL</mat-label>
+          <input matInput formControlName="url" placeholder="Nhập đường dẫn menu">
+          <mat-error *ngIf="isFieldInvalid(menuForm, 'url')">{{ getFieldError(menuForm, 'url') }}</mat-error>
+        </mat-form-field>
       </div>
-      <div class="menu__modal-body">
-        <form [formGroup]="menuForm" (ngSubmit)="saveMenu()" class="menu__form">
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Tên menu</mat-label>
-            <input matInput formControlName="name" placeholder="Nhập tên menu">
-            <mat-error *ngIf="isFieldInvalid(menuForm, 'name')">{{ getFieldError(menuForm, 'name') }}</mat-error>
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Mô tả</mat-label>
-            <textarea matInput formControlName="description" placeholder="Nhập mô tả menu" rows="2"></textarea>
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Vị trí</mat-label>
-            <input matInput formControlName="position" placeholder="Nhập vị trí menu (tùy chọn)">
-          </mat-form-field>
-          <div class="form-options">
-            <mat-slide-toggle formControlName="isActive" class="option-toggle">
-              {{ menuForm.get('isActive')?.value ? 'Hoạt động' : 'Không hoạt động' }}
-            </mat-slide-toggle>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn btn-secondary" (click)="closeDialog()">Hủy</button>
-            <button type="submit" class="btn btn-primary" [disabled]="menuForm.invalid || isSubmitting">
-              <app-custom-spinner *ngIf="isSubmitting" size="small"></app-custom-spinner>
-              <span *ngIf="!isSubmitting">{{ isEditing ? 'Cập nhật' : 'Thêm menu' }}</span>
-            </button>
-          </div>
-        </form>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Mô tả</mat-label>
+        <textarea matInput formControlName="description" placeholder="Nhập mô tả menu" rows="2"></textarea>
+      </mat-form-field>
+      <div class="form-row form-row--2" style="display: flex; gap: 1rem;">
+        <mat-form-field appearance="outline" class="form-field" style="flex: 0 0 calc(50% - 0.5rem);">
+          <mat-label>Menu cha</mat-label>
+          <mat-select formControlName="parentId">
+            <mat-option [value]="null">Không có</mat-option>
+            <mat-option *ngFor="let parent of parentMenus" [value]="parent.id">{{ parent.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field" style="flex: 0 0 calc(50% - 0.5rem);">
+          <mat-label>Vị trí hiển thị</mat-label>
+          <mat-select formControlName="position">
+            <mat-option *ngFor="let pos of positions" [value]="pos.value">{{ pos.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-    </div>
-  </div>
+      <div class="form-row form-row--2" style="display: flex; gap: 1rem;">
+        <mat-form-field appearance="outline" class="form-field" style="flex: 0 0 calc(50% - 0.5rem);">
+          <mat-label>Thứ tự hiển thị</mat-label>
+          <input matInput type="number" formControlName="displayOrder" min="0" placeholder="0">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field" style="flex: 0 0 calc(50% - 0.5rem);">
+          <mat-label>Vai trò truy cập</mat-label>
+          <mat-select formControlName="allowedRoles" multiple>
+            <mat-option *ngFor="let role of roles" [value]="role.value">{{ role.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form-options" style="display: flex; align-items: center; gap: 1rem;">
+        <div class="form-checkbox">
+          <mat-checkbox formControlName="openInNewTab" color="primary">Mở trong tab mới</mat-checkbox>
+        </div>
+        <div class="form-checkbox">
+          <mat-checkbox formControlName="isPublished" color="primary">Công khai</mat-checkbox>
+        </div>
+      </div>
+    </form>
+  </app-modal>
 </div> 

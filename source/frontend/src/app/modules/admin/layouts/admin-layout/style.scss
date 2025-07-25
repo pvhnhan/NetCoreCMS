@@ -18,21 +18,21 @@
   z-index: 10;
   min-height: 100vh;
   position: relative;
-  padding: $spacing-lg 0;
+  padding: 1.25rem 0;
 }
 
 .sidebar-header {
-  padding: 0 $spacing-lg $spacing-md $spacing-lg;
+  padding: 1rem $spacing-lg $spacing-md $spacing-lg;
   font-size: $font-size-xl;
   font-weight: $font-weight-bold;
   letter-spacing: 1px;  
-  background: transparent;
+  background: linear-gradient(90deg, #8B4513 0%, #C19A6B 100%);
   border-bottom: 1px solid rgba($white, 0.06);
   .sidebar-brand {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
     letter-spacing: 1px;
-    color: $primary-brown;
+    color: rgb(236 208 74);
     text-shadow: 0 2px 8px rgba($black, 0.04);
     display: flex;
     align-items: center;
@@ -61,7 +61,7 @@
       margin-bottom: $spacing-xs;
       a {
         background: none;
-        color: $primary-orange;
+        color: #fff;
         font-weight: $font-weight-bold;
         border-radius: $border-radius-md;
         box-shadow: none;
@@ -87,8 +87,8 @@
           margin-right: $spacing-xs;
         }
         .dashboard-title {
-          font-size: 1.175rem;
-          font-weight: $font-weight-bold;
+          font-size: $font-size-base;
+          font-weight: $font-weight-normal;
         }
         &:hover, &.active {
           background: rgba($primary-orange, 0.08);

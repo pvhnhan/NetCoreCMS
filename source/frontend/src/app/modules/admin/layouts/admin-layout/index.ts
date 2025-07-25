@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
       <!-- Sidebar -->
       <aside class="admin-sidebar">
         <div class="sidebar-header">
-          <div class="sidebar-brand text-white">QUẢN TRỊ DỮ LIỆU</div>
+          <div class="sidebar-brand">MENU QUẢN TRỊ</div>
         </div>
         <nav class="sidebar-menu">
           <ul>

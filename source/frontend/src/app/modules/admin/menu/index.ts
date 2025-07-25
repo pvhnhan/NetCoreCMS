@@ -17,6 +17,7 @@ import { IconEditButtonComponent } from '../../../shared/components/buttons/icon
 import { IconDeleteButtonComponent } from '../../../shared/components/buttons/icon-delete-button.component';
 import { TableComponent } from '../../../shared/components/table/table.component';
 import { CustomSpinnerComponent } from '../../../shared/components/custom-spinner/custom-spinner.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-menu',
@@ -40,7 +41,8 @@ import { CustomSpinnerComponent } from '../../../shared/components/custom-spinne
     IconEditButtonComponent,
     IconDeleteButtonComponent,
     TableComponent,
-    CustomSpinnerComponent
+    CustomSpinnerComponent,
+    ModalComponent // Thêm modal dùng chung
   ],
   templateUrl: './index.html',
   styleUrls: ['./style.scss']
@@ -55,19 +57,39 @@ export class MenuComponent implements OnInit {
   isSubmitting = false;
   menuForm: FormGroup;
   tableColumns = [
-    { label: 'Tên menu', field: 'name', width: '25%', headerClass: 'header-name' },
-    { label: 'Mô tả', field: 'description', width: '35%', headerClass: 'header-desc' },
-    { label: 'Vị trí', field: 'position', width: '15%', headerClass: 'header-pos' },
-    { label: 'Trạng thái', field: 'isActive', width: '10%', headerClass: 'header-status' }
+    { label: 'Tên menu', field: 'name', width: '20%' },
+    { label: 'URL', field: 'url', width: '14%' },
+    { label: 'Menu cha', field: 'parentName', width: '20%' },
+    { label: 'Thứ tự', field: 'displayOrder', width: '10%'},
+    { label: 'Vị trí', field: 'position', width: '10%' },
+    { label: 'Hiển thị', field: 'isPublished', width: '10%' }
   ];
+  positions = [
+    { value: 'Header', label: 'Header' },
+    { value: 'Footer', label: 'Footer' },
+    { value: 'Sidebar', label: 'Sidebar' }
+  ];
+  roles = [
+    { value: 'Admin', label: 'Admin' },
+    { value: 'Manager', label: 'Manager' },
+    { value: 'Editor', label: 'Editor' },
+    { value: 'User', label: 'User' }
+  ];
+  parentMenus: any[] = [];
 
   constructor(private fb: FormBuilder) {
     this.menuForm = this.fb.group({
       id: [null],
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      description: [''],
-      position: [''],
-      isActive: [true]
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      description: ['', [Validators.maxLength(500)]],
+      url: ['', [Validators.maxLength(200)]],
+      icon: ['', [Validators.maxLength(50)]],
+      displayOrder: [0],
+      parentId: [null],
+      position: ['Header', [Validators.required]],
+      openInNewTab: [false],
+      allowedRoles: [[]],
+      isPublished: [true]
     });
   }
 
@@ -80,16 +102,23 @@ export class MenuComponent implements OnInit {
     this.errorMessage = '';
     setTimeout(() => {
       this.menus = [
-        { id: 1, name: 'Menu chính', description: 'Menu chính của website', position: 'Top', isActive: true },
-        { id: 2, name: 'Menu phụ', description: 'Menu phụ cho các trang con', position: 'Bottom', isActive: false }
+        { id: 1, name: 'Menu chính', description: 'Menu chính của website', url: '/', icon: 'fa-solid fa-house', displayOrder: 1, parentId: null, parentName: '', position: 'Header', openInNewTab: false, allowedRoles: ['Admin', 'User'], isPublished: true },
+        { id: 2, name: 'Menu phụ', description: 'Menu phụ cho các trang con', url: '/sub', icon: 'fa-solid fa-bars', displayOrder: 2, parentId: 1, parentName: 'Menu chính', position: 'Footer', openInNewTab: true, allowedRoles: ['Manager'], isPublished: false }
       ];
+      this.parentMenus = this.menus.map(m => ({ id: m.id, name: m.name }));
       this.isLoading = false;
     }, 1000);
   }
 
   openAddDialog(): void {
     this.isEditing = false;
-    this.menuForm.reset({ isActive: true });
+    this.menuForm.reset({
+      displayOrder: 0,
+      openInNewTab: false,
+      isPublished: true,
+      allowedRoles: [],
+      position: 'Header'
+    });
     this.showDialog = true;
   }
 
@@ -100,7 +129,7 @@ export class MenuComponent implements OnInit {
 
   editMenu(menu: any): void {
     this.isEditing = true;
-    this.menuForm.patchValue(menu);
+    this.menuForm.patchValue({ ...menu, allowedRoles: menu.allowedRoles || [] });
     this.showDialog = true;
   }
 

@@ -110,7 +110,7 @@
           label="Logo"
           [required]="false"
           placeholder="Chọn logo cho website"
-          helpText="Hỗ trợ: JPG, PNG, SVG (Tối đa 2MB)"
+          hint="Hỗ trợ: JPG, PNG, SVG (Tối đa 2MB)"
           [imagePreview]="logoPreviewUrl || ''"
           (fileSelected)="onLogoFileSelected($event)"
           (imageRemoved)="removeLogo()">
@@ -121,7 +121,7 @@
           label="Favicon"
           [required]="false"
           placeholder="Chọn favicon cho website"
-          helpText="Hỗ trợ: ICO, PNG (Tối đa 1MB)"
+          hint="Hỗ trợ: ICO, PNG (Tối đa 1MB)"
           [imagePreview]="faviconPreviewUrl || ''"
           (fileSelected)="onFaviconFileSelected($event)"
           (imageRemoved)="removeFavicon()">
