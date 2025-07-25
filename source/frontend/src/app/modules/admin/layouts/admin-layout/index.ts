@@ -11,46 +11,50 @@ import { MatIconModule } from '@angular/material/icon';
   template: `
     <div class="admin-layout">
       <!-- Sidebar -->
-      <aside class="admin-sidebar">
-        <div class="sidebar-header">
-          <div class="sidebar-brand">MENU QUẢN TRỊ</div>
+      <aside class="admin-sidebar" [class.collapsed]="isSidebarCollapsed">
+        <div class="sidebar-header d-flex align-items-center justify-content-between">
+          <div class="sidebar-brand" *ngIf="!isSidebarCollapsed">MENU QUẢN TRỊ</div>
+          <button class="sidebar-toggle" (click)="isSidebarCollapsed = !isSidebarCollapsed">
+            <mat-icon>{{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+          </button>
         </div>
         <nav class="sidebar-menu">
           <ul>
             <li class="sidebar-dashboard">
-              <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">                
-                <span class="dashboard-title">ADMIN DASHBOARD</span>
+              <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidebar-link">
+                <mat-icon *ngIf="isSidebarCollapsed">dashboard</mat-icon>
+                <span *ngIf="!isSidebarCollapsed">ADMIN DASHBOARD</span>
               </a>
             </li>
             <li>
-              <a routerLink="/admin/category-type" routerLinkActive="active">
+              <a routerLink="/admin/category-type" routerLinkActive="active" class="sidebar-link">
                 <mat-icon>category</mat-icon>
-                <span>Quản lý danh mục</span>
+                <span *ngIf="!isSidebarCollapsed">Quản lý danh mục</span>
               </a>
             </li>
             <li>
-              <a routerLink="/admin/banner" routerLinkActive="active">
-                <mat-icon>image</mat-icon>
-                <span>Quản lý banner</span>
+              <a routerLink="/admin/banner" routerLinkActive="active" class="sidebar-link">
+                <mat-icon>photo</mat-icon>
+                <span *ngIf="!isSidebarCollapsed">Quản lý banner</span>
               </a>
             </li>
             <li>
-              <a routerLink="/admin/menu" routerLinkActive="active">
+              <a routerLink="/admin/menu" routerLinkActive="active" class="sidebar-link">
                 <mat-icon>menu</mat-icon>
-                <span>Quản lý menu</span>
+                <span *ngIf="!isSidebarCollapsed">Quản lý menu</span>
               </a>
             </li>
             <li>
-              <a routerLink="/admin/system-info" routerLinkActive="active">
+              <a routerLink="/admin/system-info" routerLinkActive="active" class="sidebar-link">
                 <mat-icon>info</mat-icon>
-                <span>Thông tin hệ thống</span>
+                <span *ngIf="!isSidebarCollapsed">Thông tin hệ thống</span>
               </a>
             </li>
           </ul>
         </nav>
       </aside>
       <!-- Content Area -->
-      <main class="admin-content w-100 px-4">
+      <main class="admin-content w-100 px-4" [class.sidebar-collapsed]="isSidebarCollapsed">
         <div class="admin-content-card">
           <router-outlet></router-outlet>
         </div>
@@ -58,4 +62,6 @@ import { MatIconModule } from '@angular/material/icon';
     </div>
   `
 })
-export class AdminLayoutComponent {} 
+export class AdminLayoutComponent {
+  isSidebarCollapsed: boolean = false;
+} 
